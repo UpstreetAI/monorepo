@@ -39,7 +39,7 @@ type Message = {
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id?: string
-  user: User|null
+  user?: User|null
   // missingKeys: string[]
   room: string
 }
@@ -147,7 +147,7 @@ export function Chat({ id, className, user, /*missingKeys, */ room }: ChatProps)
   )
 }
 
-function getMessageComponent(room: string, user: User|null, message: Message, playersCache: Map<string, Player>, sendRawMessage: (method: string, opts: object) => void) {
+function getMessageComponent(room: string, user: User|null|undefined, message: Message, playersCache: Map<string, Player>, sendRawMessage: (method: string, opts: object) => void) {
  
   switch (message.method) {
 

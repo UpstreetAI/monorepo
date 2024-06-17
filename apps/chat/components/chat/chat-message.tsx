@@ -18,7 +18,7 @@ export interface ChatMessageProps {
   player?: any
   room: string
   timestamp: number
-  user: User | null
+  user?: User | null
 }
 
 export function ChatMessage({

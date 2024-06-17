@@ -25,7 +25,7 @@ import type { Message, RoomID } from '@/types'
 
 
 const messageComponents: {
-  [key in string]: ( params: { message: Message, playersCache: any, room: RoomID, user: User | null,  }) => React.JSX.Element
+  [key in string]: ( params: { message: Message, playersCache: any, room: RoomID, user: User | null | undefined,  }) => React.JSX.Element
 } = {
   confirmCreatedAgent: ({ message }) => <ConfirmNewAgentMessage message={message}/>,
 
@@ -79,7 +79,7 @@ export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   messages?: Message[]
   room: string
-  user: User|null
+  user?: User|null
 }
 
 export function Chat({ className, messages, room, user }: ChatProps) {
@@ -173,7 +173,7 @@ export function Chat({ className, messages, room, user }: ChatProps) {
   )
 }
 
-function getMessageComponent(room: string, user: User|null, message: Message, playersCache: Map<string, Player>, sendRawMessage: (method: string, opts: object) => void) {
+function getMessageComponent(room: string, user: User|null|undefined, message: Message, playersCache: Map<string, Player>, sendRawMessage: (method: string, opts: object) => void) {
   return messageComponents[message.method]?.({ message, playersCache, room, user })
   /*switch (message.method) {
 
