@@ -21,10 +21,12 @@ import { UIState } from '@/lib/chat/actions'
 import { PlayerSpec, Player, useMultiplayerActions } from '@/components/ui/multiplayer-actions'
 import { Button } from '@/components/ui/button'
 
-import type { Message } from '@/types'
+import type { Message, RoomID } from '@/types'
 
 
-const messageComponents = {
+const messageComponents: {
+  [key in string]: ( params: { message: Message, playersCache: any, room: RoomID, user: User | null,  }) => React.JSX.Element
+} = {
   confirmCreatedAgent: ({ message }) => <ConfirmNewAgentMessage message={message}/>,
 
   creatingAgent: ({ message }) => (
@@ -96,7 +98,7 @@ export function Chat({ className, messages, room, user }: ChatProps) {
   } = useMultiplayerActions()
 
   const _messages = (messages || rawMessages).map((message: any, index: number) => ({
-    id: index,
+    id: message.id,
     display: messageComponents[message.method]?.({ message, playersCache, room, user }),
   }))
 

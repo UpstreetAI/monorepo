@@ -19,7 +19,7 @@ export function ComponentComponent( {
           ? <fieldset className="border border-solid border-gray-300 p-3">
             <legend className="text-sm">{name}</legend>
 
-            {components.map( component => <ComponentComponent {...component}/> )}
+            {components.map( component => <ComponentComponent {...component} key={component.id}/> )}
           </fieldset>
           :<>
             <input type="checkbox" className="mr-2" checked={enabled}/>

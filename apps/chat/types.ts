@@ -3,15 +3,16 @@ export type RoomID = UUID
 
 
 export type Component = {
+  id: UUID
   components?: Component[]
   enabled: boolean
   name: string
 }
 
-export type Message<T> = {
+export type Message<T = any> = {
   args: {[key in string]: any }
   method: string
   name: string
   timestamp: number
-  userId: string
+  userId: UUID
 } & T

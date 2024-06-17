@@ -60,51 +60,63 @@ const builderMessages = [
       components: [
         {
           name: 'Input',
+          id: crypto.randomUUID,
           components: [
             {
               name: 'Text',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Images',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Audio',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Videos',
+              id: crypto.randomUUID,
               enabled: false,
             }
           ]
         },
         {
           name: 'Actions',
+          id: crypto.randomUUID,
           components: [
             {
               name: 'Example Action A',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Example Action B',
+              id: crypto.randomUUID,
               enabled: false,
             },
           ]
         },
         {
           name: 'Outputs',
+          id: crypto.randomUUID,
           components: [
             {
               name: 'Text',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Images',
+              id: crypto.randomUUID,
               enabled: true,
             },
             {
               name: 'Audio',
+              id: crypto.randomUUID,
               enabled: false,
             },
           ]

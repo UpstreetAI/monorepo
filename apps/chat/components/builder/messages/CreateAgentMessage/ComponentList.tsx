@@ -12,7 +12,7 @@ export function ComponentList({
   return (
     <div>
       { components.map( component =>
-        <ComponentComponent {...component} />
+        <ComponentComponent {...component} key={component.id}/>
       )}
     </div>
   )
