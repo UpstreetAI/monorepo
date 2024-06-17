@@ -15,7 +15,7 @@ export interface ChatMessageProps {
   content: React.ReactNode
   media: any
   name: string
-  player: any
+  player?: any
   room: string
   timestamp: number
   user: User | null
@@ -30,16 +30,16 @@ export function ChatMessage({
   timestamp,
   user,
 }: ChatMessageProps) {
-  if (!player) {
+  /*if (!player) {
     throw new Error('Player is required')
-  }
+  }*/
   if (!user) {
     throw new Error('User is required')
   }
 
-  const playerSpec = player.getPlayerSpec()
-  const agentUrl = getAgentUrl(playerSpec)
-  const avatarURL = getAgentPreviewImageUrl(playerSpec)
+  const playerSpec = player?.getPlayerSpec()
+  const agentUrl = playerSpec ? getAgentUrl(playerSpec) : ''
+  const avatarURL = playerSpec ? getAgentPreviewImageUrl(playerSpec) : ''
 
   return (
     <div>
@@ -135,5 +135,3 @@ export function ChatMessageImage({
     </div>
   )
 }
-
-
