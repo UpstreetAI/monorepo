@@ -33,9 +33,9 @@ export function ChatMessage({
   /*if (!player) {
     throw new Error('Player is required')
   }*/
-  if (!user) {
+  /*if (!user) {
     throw new Error('User is required')
-  }
+  }*/
 
   const playerSpec = player?.getPlayerSpec()
   const agentUrl = playerSpec ? getAgentUrl(playerSpec) : ''
