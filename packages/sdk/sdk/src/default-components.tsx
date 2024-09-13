@@ -249,16 +249,18 @@ const DefaultMemoriesInternal = () => {
     setDefaultMemoriesValue(value);
   };
 
-  return defaultMemoriesValue.length > 0 && (
+  return (
     <>
-      <Prompt>
-        {dedent`\
-          # Memories
-          Your character has the following in mind:
-          ` + '\n' +
-          JSON.stringify(defaultMemoriesValue, null, 2)
-        }
-      </Prompt>
+      {defaultMemoriesValue.length > 0 && (
+        <Prompt>
+          {dedent`\
+            # Memories
+            Your character has the following in mind:
+            ` + '\n' +
+            JSON.stringify(defaultMemoriesValue, null, 2)
+          }
+        </Prompt>
+      )}
       <EveryNMessages n={1}>{() => {
         refreshDefaultMemories();
       }}</EveryNMessages>
