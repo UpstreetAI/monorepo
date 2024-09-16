@@ -7,6 +7,7 @@ import { Profile } from './profile';
 import { Credits } from './credits';
 import { AccountSubscriptions } from './subscriptions';
 import { Monetization } from './monetization';
+import { TopUp } from './topup';
 import useHash from '@/lib/hooks/use-hash';
 
 
@@ -52,6 +53,9 @@ export function Tabs({ user, agents: agentsInit, voices: voicesInit, creditsUsag
           <li>
             <button onClick={() => { setTab('monetization'); }} className={`inline-block p-4 border-b-2 rounded-t-lg ${tab === 'monetization' ? activeClass : inactiveClass}`}>Monetization</button>
           </li>
+          <li>
+            <button onClick={() => { setTab('top-up'); }} className={`inline-block p-4 border-b-2 rounded-t-lg ${tab === 'top-up' ? activeClass : inactiveClass}`}>Top Up</button>
+          </li>
         </ul>
       </div>
       <div className='w-full md:w-4xl max-w-4xl'>
@@ -72,6 +76,9 @@ export function Tabs({ user, agents: agentsInit, voices: voicesInit, creditsUsag
         </div>
         <div className={tab === 'monetization' ? 'block w-full' : 'hidden'}>
           <Monetization userPrivate={userPrivate} />
+        </div>
+        <div className={tab === 'top-up' ? 'block w-full' : 'hidden'}>
+          <TopUp/>
         </div>
       </div>
     </div>
