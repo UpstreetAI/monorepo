@@ -48,6 +48,7 @@ import {
   Currency,
   Interval,
 } from 'react-agents/types';
+import { base64ToBlob, blobToBase64 } from 'react-agents/util/base64.mjs';
 const ensureEsbuild = (() => {
   let esBuildPromise: Promise<void> | null = null;
   return () => {
@@ -203,23 +204,42 @@ type AgentEditorProps = {
   user: any;
 };
 
+const clearLocalStorage = () => {
+  localStorage.removeItem('name');
+  localStorage.removeItem('bio');
+  localStorage.removeItem('visualDescription');
+  localStorage.removeItem('homespaceDescription');
+  localStorage.removeItem('previewUrl');
+  localStorage.removeItem('homespaceUrl');
+  localStorage.removeItem('previewBlob');
+  localStorage.removeItem('homespaceBlob');
+  localStorage.removeItem('features');
+};
+
 export default function AgentEditor({
   user,
 }: AgentEditorProps) {
   // state
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [visualDescription, setVisualDescription] = useState('');
-  const [homespaceDescription, setHomespaceDescription] = useState('');
+  const [name, setName] = useState(localStorage.getItem('name') || '');
+  const [bio, setBio] = useState(localStorage.getItem('bio') || '');
+  const [visualDescription, setVisualDescription] = useState(localStorage.getItem('visualDescription') || '');
+  const [homespaceDescription, setHomespaceDescription] = useState(localStorage.getItem('homespaceDescription') || '');
 
   const [model, setModel] = useState(defaultModels[0]);
   const [visionModel, setVisionModel] = useState(defaultVisionModels[0]);
 
-  const [previewBlob, setPreviewBlob] = useState<Blob | null>(null);
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewBlob, setPreviewBlob] = useState<Blob | null>(() => {
+    const base64 = localStorage.getItem('previewBlob');
+    return base64 ? base64ToBlob(base64) : null;
+  });
 
-  const [homespaceBlob, setHomespaceBlob] = useState<Blob | null>(null);
-  const [homespaceUrl, setHomespaceUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState(localStorage.getItem('previewUrl') || '');
+
+  const [homespaceBlob, setHomespaceBlob] = useState<Blob | null>(() => {
+    const base64 = localStorage.getItem('homespaceBlob');
+    return base64 ? base64ToBlob(base64) : null;
+  });
+  const [homespaceUrl, setHomespaceUrl] = useState(localStorage.getItem('homespaceUrl') || '');
 
   const [deploying, setDeploying] = useState(false);
   const [room, setRoom] = useState('');
@@ -239,14 +259,67 @@ export default function AgentEditor({
   const editorForm = useRef<HTMLFormElement>(null);
 
   const [voices, setVoices] = useState(() => defaultVoices.slice());
-  const [features, setFeatures] = useState<FeaturesObject>({
-    tts: null,
-    rateLimit: null,
-    storeItems: null,
+  const [features, setFeatures] = useState<FeaturesObject>(() => {
+    const savedFeatures = localStorage.getItem('features');
+    return savedFeatures ? JSON.parse(savedFeatures) : {
+      tts: null,
+      rateLimit: null,
+      storeItems: null,
+    };
   });
   const [sourceCode, setSourceCode] = useState(() => makeAgentSourceCode(features));
 
   const monaco = useMonaco();
+
+  useEffect(() => {
+    console.log('set name', name);
+    localStorage.setItem('name', name);
+  }, [name]);
+
+  useEffect(() => {
+    localStorage.setItem('bio', bio);
+  }, [bio]);
+
+  useEffect(() => {
+    localStorage.setItem('visualDescription', visualDescription);
+  }, [visualDescription]);
+
+  useEffect(() => {
+    localStorage.setItem('homespaceDescription', homespaceDescription);
+  }, [homespaceDescription]);
+
+  useEffect(() => {
+    console.log('set previewUrl', previewUrl);
+    localStorage.setItem('previewUrl', previewUrl);
+  }, [previewUrl]);
+
+  useEffect(() => {
+    localStorage.setItem('homespaceUrl', homespaceUrl);
+  }, [homespaceUrl]);
+
+  useEffect(() => {
+    if (previewBlob) {
+      blobToBase64(previewBlob).then(base64 => {
+        localStorage.setItem('previewBlob', base64);
+      });
+    } else {
+      localStorage.removeItem('previewBlob');
+    }
+  }, [previewBlob]);
+
+  useEffect(() => {
+    if (homespaceBlob) {
+      blobToBase64(homespaceBlob).then(base64 => {
+        localStorage.setItem('homespaceBlob', base64);
+      });
+    } else {
+      localStorage.removeItem('homespaceBlob');
+    }
+  }, [homespaceBlob]);
+
+  useEffect(() => {
+    localStorage.setItem('features', JSON.stringify(features));
+  }, [features]);
 
   // useEffect(() => {
   //   (async () => {
@@ -646,6 +719,28 @@ export default function AgentEditor({
     },
   });
 
+  const handleClear = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    clearLocalStorage();
+    setName('');
+    setBio('');
+    setVisualDescription('');
+    setHomespaceDescription('');
+    setPreviewBlob(null);
+    setPreviewUrl('');
+    setHomespaceBlob(null);
+    setHomespaceUrl('');
+    setFeatures({
+      tts: null,
+      rateLimit: null,
+      storeItems: null,
+    });
+    setSourceCode('');
+    setBuilderMessages([]);
+  }
+
   // render
   return (
     <div className="flex flex-1">
@@ -792,6 +887,7 @@ export default function AgentEditor({
                   const agentJsonOutput = JSON.parse(agentJsonOutputString);
                   const guid = agentJsonOutput.id;
                   location.href = `/agents/${guid}`;
+                  clearLocalStorage();
                 } else {
                   console.error('failed to deploy agent', res);
                 }
@@ -921,6 +1017,7 @@ export default function AgentEditor({
               }}
               disabled={deploying}
             >{!deploying ? `Deploy` : 'Deploying...'}</Button>
+            <Button onClick={handleClear} disabled={deploying}>Clear</Button>
           </div>
         </div>
         <div className="flex flex-col">
