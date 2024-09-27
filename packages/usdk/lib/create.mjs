@@ -149,7 +149,7 @@ export const create = async (args, opts) => {
     throw new Error('You must be logged in to create an agent.');
   }
 
-  if ((+!!args.prompt + +!!args.template + +!!args.source) > 1) {
+  if ((+!!args.prompt + /*+!!args.template +*/ +!!args.source) > 1) {
     throw new Error('multiple mutually exclusive options --prompt, --template and --source');
   }
 
