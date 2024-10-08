@@ -38,6 +38,8 @@ export function Profile({
 
   const [user, setUser] = useState(() => userInit);
   const [name, _setName] = useState<string>(user.name);
+  const [description, _setDescription] = useState<string>(user.description);
+
   const setName = (name: string) => {
     _setName(name);
     // user.name = name;
@@ -61,6 +63,7 @@ export function Profile({
     setIsSavingInfo(true);
     const o = {
       name,
+      description,
       playerSpec: {
         ...user.playerSpec,
         bio,
@@ -211,6 +214,13 @@ export function Profile({
     }
   };
 
+  const Label = ({ text }: { text: string }) => (
+    <div className='flex flex-row items-start mb-2'>
+      <label className="text-sm font-medium text-zinc-200">{text}</label>
+    </div>
+  );
+  
+
   return (
     <div className="m-auto w-full max-w-4xl">
       <div className="sm:flex sm:flex-col sm:align-center py-2 md:py-4">
@@ -246,46 +256,57 @@ export function Profile({
                 {isGeneratingPfp ? 'Generating...' : 'Generate'}
               </Button>
             </div>
-            <div className='flex flex-col w-full mt-4 md:mt-0 items-end'>
+            <div className='flex flex-col w-full mt-4 md:mt-0'>
+              <Label text="Name" />
               <input
                 type="text"
                 name="fullName"
-                className="w-full p-3 rounded-md bg-zinc-800 mb-2"
+                className="w-full p-3 rounded-md bg-zinc-800 mb-4"
                 placeholder="Display name"
                 maxLength={64}
                 value={name}
                 onChange={e => setName(e.target.value)}
               />
+              <Label text="Bio" />
               <textarea
-                name="fullName"
-                className="w-full h-32 p-3 rounded-md bg-zinc-800 mb-2 text-sm"
+                name="bio"
+                className="w-full h-32 p-3 rounded-md bg-zinc-800 mb-4 text-sm"
                 value={bio}
                 placeholder="Bio"
                 onChange={e => setBio(e.target.value)}
               />
+              <Label text="Visual Description" />
               <textarea
                 name="visualDescription"
-                className="w-full h-12 p-3 rounded-md bg-zinc-800 mb-2 text-sm"
+                className="w-full h-12 p-3 rounded-md bg-zinc-800 mb-4 text-sm"
                 value={visualDescription}
                 placeholder="Visual description"
                 onChange={e => setVisualDescription(e.target.value)}
               />
+              <Label text="Description" />
+              <textarea
+                name="description"
+                className="w-full h-32 p-3 rounded-md bg-zinc-800 mb-4 text-sm"
+                value={description}
+                placeholder="Description"
+                onChange={e => _setDescription(e.target.value)}
+              />
               <div className="flex flex-row items-center justify-end">
-              <Button
-                onClick={ensureAutofill}
-                className="mr-2"
-                disabled={isAutofillLoading}
-              >
-                {isAutofillLoading && <IconSpinner className="mr-2" />}
-                {isAutofillLoading ? 'Autofilling...' : 'Autofill'}
-              </Button>
-              <Button
-                onClick={saveInfo}
-                disabled={isSavingInfo}
-              >
-                {isSavingInfo && <IconSpinner className="mr-2" />}
-                {isSavingInfo ? 'Saving...' : 'Save Info'}
-              </Button>
+                <Button
+                  onClick={ensureAutofill}
+                  className="mr-2"
+                  disabled={isAutofillLoading}
+                >
+                  {isAutofillLoading && <IconSpinner className="mr-2" />}
+                  {isAutofillLoading ? 'Autofilling...' : 'Autofill'}
+                </Button>
+                <Button
+                  onClick={saveInfo}
+                  disabled={isSavingInfo}
+                >
+                  {isSavingInfo && <IconSpinner className="mr-2" />}
+                  {isSavingInfo ? 'Saving...' : 'Save Info'}
+                </Button>
               </div>
             </div>
           </div>
