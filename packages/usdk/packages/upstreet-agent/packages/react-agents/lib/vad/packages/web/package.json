@@ -1,0 +1,37 @@
+{
+  "name": "@ricky0123/vad-web",
+  "description": "Powerful, user-friendly voice activity detector (VAD) for the browser",
+  "keywords": [
+    "speech-recognition",
+    "wake-word-detection",
+    "machine-learning",
+    "voice-activity-detection",
+    "vad",
+    "onnx",
+    "voice-control",
+    "offline-speech-recognition"
+  ],
+  "homepage": "https://github.com/ricky0123/vad",
+  "version": "0.0.18",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "unpkg": "dist/bundle.min.js",
+  "jsdelivr": "dist/bundle.min.js",
+  "devDependencies": {
+    "@playwright/test": "^1.30.0",
+    "@types/audioworklet": "^0.0.36",
+    "@types/express": "^4.17.17",
+    "express": "^4.18.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "onnxruntime-web": "^1.14.0"
+  },
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "test-server": "tsc -p ./scripts/tsconfig.json && node ./scripts/test-server.js",
+    "test": "playwright test",
+    "clean": "rm -rf dist"
+  }
+}

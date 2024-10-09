@@ -1,0 +1,64 @@
+name: Publish to npmjs
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: choice
+        description: Which package to publish?
+        options: 
+        - vad-web
+        - vad-react
+        - vad-node
+      dry-run:
+        type: boolean
+        description: Dry run?
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Set Working Directory
+        run: |
+          PACKAGE_NAME=${{ github.event.inputs.package }}
+          case $PACKAGE_NAME in
+            vad-web)
+              WORKING_DIRECTORY='./packages/web'
+              ;;
+            vad-react)
+              WORKING_DIRECTORY='./packages/react'
+              ;;
+            vad-node)
+              WORKING_DIRECTORY='./packages/node'
+              ;;
+            *)
+              echo "Error: Unknown package name"
+              exit 1
+              ;;
+          esac
+          echo "WORKING_DIRECTORY=$WORKING_DIRECTORY" >> $GITHUB_ENV
+          echo "Working Directory: $WORKING_DIRECTORY"
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Publish Package
+        run: |
+          if [ "${{ github.event.inputs.dry-run }}" == "true" ]; then
+            npm publish --access=public --dry-run
+          else
+            npm publish --access=public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: ${{ env.WORKING_DIRECTORY }}

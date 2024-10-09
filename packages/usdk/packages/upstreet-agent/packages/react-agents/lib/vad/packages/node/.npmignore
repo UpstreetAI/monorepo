@@ -1,0 +1,8 @@
+node_modules/
+playwright-report/
+src/
+scripts/
+test/
+webpack.config.js
+tsconfig*
+!*.onnx
