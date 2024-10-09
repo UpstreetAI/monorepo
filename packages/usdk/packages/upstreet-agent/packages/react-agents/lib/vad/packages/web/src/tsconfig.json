@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "noEmitOnError": false,
+      "skipLibCheck": true,
+      "strict": false,
+      "noEmitHelpers": true,
+      "removeComments": false,
+      "preserveConstEnums": true,
+      "noEmit": false,
+      "downlevelIteration": false,
+      "preserveValueImports": true, // Keeps original import structure
+      "isolatedModules": true, // Compiles each file separately, which can help avoid code transformation
+      "emitDecoratorMetadata": false, // Disables adding metadata for decorators
+      "target": "esnext", // Sets the output to the latest ECMAScript version to avoid unnecessary transformations
+      "module": "esnext" // Ensures module syntax remains as ES modules
+    }
+  }
