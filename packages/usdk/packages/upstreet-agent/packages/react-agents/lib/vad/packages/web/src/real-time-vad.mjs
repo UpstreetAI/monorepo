@@ -1,4 +1,4 @@
-import * as ortInstance from "onnxruntime-web";
+import ortInstance from "onnxruntime-web";
 import { log, Message, Silero, defaultFrameProcessorOptions, FrameProcessor, validateOptions } from "./_common/index.js";
 import { assetPath } from "./asset-path.js";
 import { defaultModelFetcher } from "./default-model-fetcher.js";
