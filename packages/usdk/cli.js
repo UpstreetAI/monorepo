@@ -121,6 +121,8 @@ import { cleanDir } from './lib/directory-util.mjs';
 import { npmInstall } from './lib/npm-util.mjs';
 import { featureSpecs } from './packages/upstreet-agent/packages/react-agents/util/agent-features.mjs';
 
+import { StreamVAD } from './packages/upstreet-agent/packages/react-agents/lib/vad/packages/web/src/real-time-vad.mjs';
+
 globalThis.WebSocket = WebSocket; // polyfill for multiplayer library
 
 const wranglerTomlString = fs.readFileSync(wranglerTomlPath, 'utf8');
@@ -3205,6 +3207,9 @@ const handleError = async (fn) => {
   }
 };
 const main = async () => {
+  const vad = new StreamVAD();
+  await vad.waitForLoad();
+
   let commandExecuted = false;
   program
     .name('usdk')
