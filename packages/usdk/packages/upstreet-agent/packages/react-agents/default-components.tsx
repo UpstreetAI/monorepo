@@ -169,6 +169,20 @@ const ChatActions = () => {
         //   await e.commit();
         // }}
       />
+      <Action
+        name="noAction"
+        description={dedent`\
+          This action indicates that no response is necessary at the moment.
+          It does not send any message or trigger any further behavior.
+        `}
+        schema={z.object({})}
+        examples={[
+          // no examples necessary for noAction as it performs no activity
+        ]}
+        handler={async (e: PendingActionEvent) => {
+          await e.commit(); // commit to log the action or remove it entirely if not needed.
+        }}
+      />
     </>
   );
 };
@@ -663,8 +677,9 @@ export const DefaultHeaderPrompt = () => {
   return (
     <Prompt>
       {dedent`
-        Role-play as a character in a chat given the current state.
-        Respond with a JSON object specifying the action method and arguments.
+        Role-play as a character in an ongoing chat based on the current state of the conversation.
+        Respond using a structured JSON object, specifying an appropriate action method and its corresponding arguments.
+        If it's determined that a response is not necessary at this time, return a JSON object with a "noAction" method and an empty arguments field.
       `}
     </Prompt>
   );
