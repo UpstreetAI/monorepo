@@ -9,6 +9,8 @@ import { multiplayerEndpointUrl } from 'react-agents/util/endpoints.mjs';
 import agentTsxUserRender from '../../agent.tsx'; // note: this will be overwritten by the build process
 import type { ActiveAgentObject } from 'react-agents/types';
 
+import { StreamVAD } from 'react-agents/lib/vad/packages/web/src/real-time-vad.ts';
+
 Error.stackTraceLimit = 300;
 
 //
@@ -32,7 +34,7 @@ const makeFakeData = () => {
   }
   return fakeData;
 };
-const _test = async () => {
+const _testCodecs = async () => {
   try {
     const fakeData = makeFakeData();
     console.log('got fake data', fakeData);
@@ -156,6 +158,10 @@ const _test = async () => {
   }
 }; */
 
+const _testVad = async () => {
+  AudioNodeVAD
+};
+
 //
 
 const cachedGet = (fn: () => any) => {
@@ -211,7 +217,7 @@ export class DurableObject extends EventTarget {
       await this.alarm();
     })();
 
-    // _test();
+    // _testCodecs();
   }
 
   waitForLoad() {
