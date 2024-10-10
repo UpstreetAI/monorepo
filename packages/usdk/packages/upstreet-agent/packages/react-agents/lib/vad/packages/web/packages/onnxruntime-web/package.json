@@ -78,7 +78,6 @@
     "webpack-cli": "^5.0.1",
     "worker-loader": "^3.0.8"
   },
-  "main": "dist/ort-web.node.js",
-  "types": "./types/lib/index.d.ts",
+  "main": "dist/ort-web.js",
   "description": "A Javascript library for running ONNX models on browsers"
 }
