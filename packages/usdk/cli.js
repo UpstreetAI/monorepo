@@ -1792,8 +1792,8 @@ const logs = async (args) => {
   const jwt = await getLoginJwt();
   if (jwt) {
     const eventSources = agentSpecs.map((agentSpec) => {
-      const { directory } = agentSpec;
-      const u = `${deployEndpointUrl}/agents/${directory}/logs`;
+      const { guid } = agentSpec;
+      const u = `${deployEndpointUrl}/agents/${guid}/logs`;
       const eventSource = new EventSource(u, {
         headers: {
           'Authorization': `Bearer ${jwt}`,
@@ -3714,25 +3714,25 @@ const main = async () => {
   //       }
   //     });
   //   });
-  // program
-  //   .command('logs')
-  //   .description(`Stream an agent's logs`)
-  //   .argument(`[guids...]`, `The guids of the agents to listen to`)
-  //   // .option(
-  //   //   `-d, --dev`,
-  //   //   `Chat with a local development agent`,
-  //   // )
-  //   .action(async (guids = [], opts = {}) => {
-  //     await handleError(async () => {
-  //       commandExecuted = true;
-  //       let args;
-  //       args = {
-  //         _: [guids],
-  //         ...opts,
-  //       };
-  //       await logs(args);
-  //     });
-  //   });
+  program
+    .command('logs')
+    .description(`Stream an agent's logs`)
+    .argument(`[guids...]`, `The guids of the agents to listen to`)
+    // .option(
+    //   `-d, --dev`,
+    //   `Chat with a local development agent`,
+    // )
+    .action(async (guids = [], opts = {}) => {
+      await handleError(async () => {
+        commandExecuted = true;
+        let args;
+        args = {
+          _: [guids],
+          ...opts,
+        };
+        await logs(args);
+      });
+    });
   // program
   //   .command('listen')
   //   .description(`Stream an agent's action events`)
