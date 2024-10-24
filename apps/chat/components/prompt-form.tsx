@@ -4,7 +4,7 @@ import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
 import { Button } from '@/components/ui/button'
-import { IconPlus, IconImage, IconDocument, IconAudio, IconVideo, IconCapture, IconTriangleDown, IconTriangleSmallDown, IconUpstreet } from '@/components/ui/icons'
+import { IconPlus, IconImage, IconDocument, IconAudio, IconVideo, IconCapture, IconTriangleDown, IconTriangleSmallDown, IconUpstreet, IconShare } from '@/components/ui/icons'
 import {
   Tooltip,
   TooltipContent,
@@ -24,9 +24,11 @@ import { ensureAudioContext } from '@/lib/audio/audio-context-output';
 
 export function PromptForm({
   input,
+  desktop,
   setInput
 }: {
   input: string
+  desktop?: boolean
   setInput: (value: string) => void
 }) {
   const [mediaPickerOpen, setMediaPickerOpen] = React.useState(false);
@@ -317,6 +319,17 @@ export function PromptForm({
               <IconCapture className="mr-2" />
               <div>Screen</div>
             </Button>
+            {desktop && <Button
+              variant="secondary"
+              className={cn("flex justify-start relative rounded bg-background mx-2 p-2 overflow-hidden")}
+              onClick={async () => {
+                console.log('control click');
+                // XXX finish this
+              }}
+            >
+              <IconShare className="mr-2" />
+              <div>Control</div>
+            </Button>}
           </div>
         )}
         <Tooltip>

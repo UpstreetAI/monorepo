@@ -18,6 +18,7 @@ export interface ChatPanelProps {
   isAtBottom: boolean
   scrollToBottom: () => void
   room?: string
+  desktop?: boolean
   messages: Array<{ id: string; display: React.ReactNode }>
   // sendChatMessage: (message: string) => void
 }
@@ -30,6 +31,7 @@ export function ChatPanel({
   isAtBottom,
   scrollToBottom,
   room,
+  desktop,
   messages,
   // sendChatMessage,
 }: ChatPanelProps) {
@@ -134,7 +136,11 @@ export function ChatPanel({
           ) : null */}
 
           <div className="space-y-4 px-4 py-2 sm:max-w-2xl mx-auto md:py-3 relative">
-            <PromptForm input={input} setInput={setInput} />
+            <PromptForm
+              input={input}
+              setInput={setInput}
+              desktop={desktop}
+            />
             {/* <FooterText className="hidden sm:block" /> */}
           </div>
 

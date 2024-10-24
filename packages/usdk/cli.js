@@ -53,6 +53,7 @@ import {
   getConnectedWalletsFromMnemonic,
 } from './packages/upstreet-agent/packages/react-agents/util/ethereum-utils.mjs';
 import { ReactAgentsLocalRuntime } from './packages/upstreet-agent/packages/react-agents-local/local-runtime.mjs';
+import { ReactAgentsElectronRuntime } from './packages/upstreet-agent/packages/react-agents-electron/electron-runtime.mjs';
 import {
   deployEndpointUrl,
   chatEndpointUrl,
@@ -965,6 +966,20 @@ const connectBrowser = ({
   open(`${chatEndpointUrl}/rooms/${room}`)
     .catch( console.error );
 };
+const connectElectron = async ({
+  room,
+  jwt,
+  debug,
+}) => {
+  const runtime = new ReactAgentsElectronRuntime({
+    room,
+    jwt,
+  });
+  await runtime.start({
+    debug,
+  });
+  return runtime;
+};
 const connectRepl = async ({
   room,
   debug,
@@ -1256,6 +1271,7 @@ const connectRepl = async ({
 const connect = async (args) => {
   const room = args._[0] ?? '';
   const mode = args.mode ?? 'repl';
+  const jwt = args.jwt;
   const debug = !!args.debug;
 
   if (room) {
@@ -1263,6 +1279,14 @@ const connect = async (args) => {
       case 'browser': {
         connectBrowser({
           room,
+        });
+        break;
+      }
+      case 'desktop': {
+        await connectElectron({
+          room,
+          jwt,
+          debug,
         });
         break;
       }
@@ -1355,6 +1379,8 @@ const chat = async (args) => {
   // console.log('got chat args', args);
   const agentSpecs = await parseAgentSpecs(args._[0]);
   const room = args.room ?? makeRoomName();
+  const browser = !!args.browser;
+  const desktop = !!args.desktop;
   const debug = !!args.debug;
 
   const jwt = await getLoginJwt();
@@ -1385,10 +1411,20 @@ const chat = async (args) => {
     );
 
     // connect to the chat
+    const mode = (() => {
+      if (browser) {
+        return 'browser';
+      } else if (desktop) {
+        return 'desktop';
+      } else {
+        return 'repl';
+      }
+    })();
     await connect({
       _: [room],
-      mode: args.browser ? 'browser' : 'repl',
-      debug: args.debug,
+      mode,
+      jwt,
+      debug,
     });
   } else {
     console.log('not logged in');
@@ -3014,6 +3050,7 @@ const main = async () => {
     .description(`Chat with agents in a multiplayer room`)
     .argument(`[guids...]`, `Guids of the agents to join the room`)
     .option(`-b, --browser`, `Open the chat room in a browser window`)
+    .option(`-d, --desktop`, `Open the chat room on the desktop, using Electron`)
     .option(`-r, --room <room>`, `The room name to join`)
     .option(`-g, --debug`, `Enable debug logging`)
     .action(async (guids = [], opts = {}) => {
@@ -3027,7 +3064,6 @@ const main = async () => {
         await chat(args);
       });
     });
-    
   // program
   //   .command('search')
   //   .description(

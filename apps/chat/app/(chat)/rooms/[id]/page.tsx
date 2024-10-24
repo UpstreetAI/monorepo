@@ -14,6 +14,9 @@ type Params = {
   params: {
     id: string;
   };
+  searchParams: {
+    desktop?: string;
+  };
 };
 
 /* export async function generateMetadata({
@@ -73,8 +76,9 @@ type Params = {
   }
 } */
 
-export default async function RoomPage({ params }: Params) {
-  const roomName = decodeURIComponent(params.id)
+export default async function RoomPage({ params, searchParams }: Params) {
+  const roomName = decodeURIComponent(params.id);
+  const desktop = searchParams.desktop === '1';
 
   return (
     // <AI initialAIState={{ chatId: id, messages: [] }}>
@@ -86,6 +90,7 @@ export default async function RoomPage({ params }: Params) {
       
       <Chat
         room={roomName}
+        desktop={desktop}
       />
 
       <SidebarDesktopRight />

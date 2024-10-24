@@ -24,6 +24,7 @@
   "dependencies": {
     "@chialab/esbuild-plugin-require-resolve": "^0.18.0",
     "@iarna/toml": "^2.2.5",
+    "@nut-tree-fork/nut-js": "^4.2.2",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -39,6 +40,7 @@
     "commander": "^12.0.0",
     "cookie": "^0.6.0",
     "dedent": "^1.5.3",
+    "electron": "^31.3.0",
     "esbuild": "^0.20.2",
     "ethers": "^6.12.0",
     "eventsource": "^2.0.2",
@@ -55,6 +57,7 @@
     "picocolors": "^1.0.1",
     "pretty-bytes": "^6.1.1",
     "react-agents-local": "file:./packages/upstreet-agent/packages/react-agents-local",
+    "react-agents-electron": "file:./packages/upstreet-agent/packages/react-agents-electron",
     "recursive-copy": "^2.0.14",
     "recursive-readdir": "^2.2.3",
     "rimraf": "^5.0.5",
