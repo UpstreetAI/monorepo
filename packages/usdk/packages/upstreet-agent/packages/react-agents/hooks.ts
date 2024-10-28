@@ -44,6 +44,11 @@ import {
 
 //
 
+export const usePersonalAssistant = () => {
+  const appContextValue = useContext(AppContext);
+  return appContextValue.usePersonalAssistantJson();
+}
+
 export const useEnvironment: () => string = () => {
   const appContextValue = useContext(AppContext);
   return appContextValue.useEnvironment();

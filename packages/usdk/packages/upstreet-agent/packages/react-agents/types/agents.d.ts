@@ -709,6 +709,7 @@ export type AppContextValue = {
   subtleAi: SubtleAi;
 
   useAgentJson: () => object;
+  usePersonalAssistantJson: () => object;
   useEnvironment: () => string;
   useWallets: () => object[];
   useAuthToken: () => string;

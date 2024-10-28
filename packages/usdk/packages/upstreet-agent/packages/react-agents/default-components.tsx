@@ -79,6 +79,7 @@ import {
   useConversation,
   useCachedMessages,
   useNumMessages,
+  usePersonalAssistant,
 } from './hooks';
 import { shuffle, parseCodeBlock } from './util/util.mjs';
 import {
@@ -108,6 +109,7 @@ import {
 import { r2EndpointUrl } from './util/endpoints.mjs';
 import { webbrowserActionsToText } from './util/browser-action-utils.mjs';
 import { createBrowser/*, testBrowser*/ } from 'react-agents/util/create-browser.mjs';
+import { BasePersonalAssistant } from './classes/personal-assistant-manager';
 
 // Note: this comment is used to remove imports before running tsdoc
 // END IMPORTS
@@ -139,6 +141,7 @@ export const DefaultAgentComponents = () => {
       {/* <LiveMode /> */}
       <DefaultPrompts />
       {/* <DefaultServers /> */}
+      <PersonalAssistant />
     </>
   );
 };
@@ -3276,4 +3279,73 @@ export const Telnyx: React.FC<TelnyxProps> = (props: TelnyxProps) => {
   ]);
 
   return null;
+};
+
+/**
+ * To use the Personal Assistant with Google Calendar integration, you need to:
+ * 
+ * 1. Set up a Google Cloud Project and enable the Google Calendar API.
+ * 2. Create a service account and download its JSON key file.
+ * 3. Create an API key for your project.
+ * 4. Share your Google Calendar with the service account email.
+ * 
+ * Then, add the following to your wrangler.toml file under the [vars] section:
+ * 
+ * PERSONAL_ASSISTANT_JSON = '{"GOOGLE_CALENDAR_ID": "your_calendar_id@group.calendar.google.com", "GOOGLE_API_KEY": "your_api_key", "GOOGLE_SERVICE_ACCOUNT_EMAIL": "your_service_account@your_project.iam.gserviceaccount.com", "GOOGLE_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\\nYour_Private_Key_Here\\n-----END PRIVATE KEY-----\\n"}'
+ * 
+ * Replace the placeholder values with your actual Google Calendar credentials.
+ * Ensure the JSON is properly escaped, especially the newlines in the private key.
+ * 
+ * For detailed instructions, visit: https://developers.google.com/calendar/api/quickstart/js
+ */
+export const PersonalAssistant = () => {
+  const peronsalAssistant = usePersonalAssistant();
+  const assistant = new BasePersonalAssistant(
+    {
+      GOOGLE_CALENDAR_ID: peronsalAssistant.GOOGLE_CALENDAR_ID,
+      GOOGLE_API_KEY: peronsalAssistant.GOOGLE_API_KEY,
+      GOOGLE_SERVICE_ACCOUNT_EMAIL: peronsalAssistant.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      GOOGLE_PRIVATE_KEY: peronsalAssistant.GOOGLE_PRIVATE_KEY,
+    }
+  );
+
+  const currentDateTime = useMemo(() => new Date().toISOString(), []); // This will only be calculated once
+
+  return (
+    <>
+    <Action
+        name="Set Calendar Event"
+        description={`Sets a new event in the user's Google Calendar. Please ensure the date and time are clearly specified in ISO 8601 format. If the date or time is ambiguous, please clarify to avoid any confusion. Current date and time (UTC): ${currentDateTime}`}
+        schema={
+          z.object({
+            summary: z.string(),
+            description: z.string(),
+            startDateTime: z.string(),
+            endDateTime: z.string(),
+            // startDateTime: z.string().datetime(), // .dateTime() not supported with openai
+            // endDateTime: z.string().datetime(),
+          })
+        }
+        examples={[
+          {
+            summary: "Team Meeting",
+            description: "Weekly team sync-up",
+            startDateTime: "2023-06-15T10:00:00-07:00",
+            endDateTime: "2023-06-15T11:00:00-07:00"
+          }
+        ]}
+        handler={async (e: PendingActionEvent) => {
+          console.log('Set Calendar Event', e.data);
+          const { summary, description, startDateTime, endDateTime } = e.data.message.args;
+          const event = {
+            summary,
+            description,
+            start: { dateTime: startDateTime },
+            end: { dateTime: endDateTime },
+          };
+          return await assistant.setCalendarEvent(event);
+        }}
+      />
+    </>
+  );
 };

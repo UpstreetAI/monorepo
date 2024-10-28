@@ -176,6 +176,11 @@ export class AgentRenderer {
       const agentJson = JSON.parse(agentJsonString);
       return agentJson;
     };
+    const usePersonalAssistantJson = () => {
+      const personalAssistantJsonString = (env as any).PERSONAL_ASSISTANT_JSON as string;
+      const personalAssistantJson = JSON.parse(personalAssistantJsonString);
+      return personalAssistantJson;
+    };
     const useEnvironment = () => {
       return (env as any).WORKER_ENV as string;
     };
@@ -207,6 +212,7 @@ export class AgentRenderer {
     this.appContextValue = new AppContextValue({
       subtleAi,
       agentJson: useAgentJson(),
+      personalAssistantJson: usePersonalAssistantJson(),
       environment: useEnvironment(),
       wallets: useWallets(),
       authToken: useAuthToken(),
