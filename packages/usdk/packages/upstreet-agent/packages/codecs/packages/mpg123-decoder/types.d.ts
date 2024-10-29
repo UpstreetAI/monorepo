@@ -1,4 +1,4 @@
-import { DecodeError } from "@wasm-audio-decoders/common";
+import { DecodeError } from "wasm-audio-decoders-common";
 
 export interface MPEGDecodedAudio {
   channelData: Float32Array[];
