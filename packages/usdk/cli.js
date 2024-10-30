@@ -2916,7 +2916,7 @@ const main = async () => {
     });
   program
     .command('chat')
-    .alias('c')
+    // .alias('c')
     .description(`Chat with agents in a multiplayer room`)
     .argument(`[guids...]`, `Guids of the agents to join the room`)
     .option(`-b, --browser`, `Open the chat room in a browser window`)
