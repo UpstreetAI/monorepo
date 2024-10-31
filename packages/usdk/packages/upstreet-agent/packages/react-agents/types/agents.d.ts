@@ -112,6 +112,9 @@ export type DiscordBotArgs = {
   userWhitelist: string[];
   agent: ActiveAgentObject;
 };
+export type TwitterBotProps = {
+  token: string;
+};
 
 // telnyx
 

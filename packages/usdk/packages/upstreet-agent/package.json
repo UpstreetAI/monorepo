@@ -25,6 +25,7 @@
     "stripe": "^16.10.0",
     "together-ai": "^0.6.0-alpha.4",
     "ts-jest": "^29.2.5",
+    "twitter-api-sdk": "file:./packages/twitter-api-typescript-sdk",
     "typescript": "^5.6.2",
     "uuid-by-string": "^4.0.0",
     "yjs": "^13.6.18",
