@@ -7,7 +7,7 @@ import JSZip from 'jszip';
 import archiver from 'archiver';
 import { QueueManager } from 'queue-manager';
 
-const packZipWithArchiver = async (dirPath, { exclude }) => {
+export const packZip = async (dirPath, { exclude = [] } = {}) => {
   const outputPath = path.join(dirPath, 'output.zip');
   const output = fs.createWriteStream(outputPath);
   const archive = archiver('zip', {
@@ -44,7 +44,7 @@ const packZipWithArchiver = async (dirPath, { exclude }) => {
       .catch((err) => reject(err));
   });
 };
-export const packZip = async (dirPath, { exclude = [] } = {}) => {
+/* export const packZip = async (dirPath, { exclude = [] } = {}) => {
   let files = await recursiveReaddir(dirPath);
   files = files.filter((p) => !exclude.some((re) => re.test(p)));
 
@@ -97,7 +97,7 @@ export const packZip = async (dirPath, { exclude = [] } = {}) => {
   const uint8Array = new Uint8Array(arrayBuffer);
   console.log('generate async 3');
   return uint8Array;
-};
+}; */
 export const extractZip = async (zipBuffer, tempPath) => {
   const cleanup = async () => {
     await rimraf(tempPath);
