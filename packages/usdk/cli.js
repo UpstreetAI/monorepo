@@ -2055,7 +2055,10 @@ const deploy = async (args) => {
 
       console.log('pack zip 1', directory);
       const uint8Array = await packZip(directory, {
-        exclude: [/\/node_modules\//],
+        exclude: [
+          /\/node_modules\//, // linux
+          /\\node_modules\\/, // windows
+        ],
       });
       console.log('pack zip 2', uint8Array);
       return;
