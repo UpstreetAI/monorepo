@@ -10,13 +10,18 @@ export const packZip = async (dirPath, { exclude = [] } = {}) => {
   let files = await recursiveReaddir(dirPath);
   files = files.filter((p) => !exclude.some((re) => re.test(p)));
 
+  console.log('got jszip 1');
   const zip = new JSZip();
+  console.log('got jszip 2');
   for (const p of files) {
     const basePath = p.slice(dirPath.length + 1);
     const stream = fs.createReadStream(p);
+    console.log('zip file 1', basePath);
     zip.file(basePath, stream);
+    console.log('zip file 2', basePath);
   }
 
+  console.log('generate async 1');
   const arrayBuffer = await zip.generateAsync({
     type: 'arraybuffer',
     compression: 'DEFLATE',
@@ -24,7 +29,9 @@ export const packZip = async (dirPath, { exclude = [] } = {}) => {
       level: 9,
     },
   });
+  console.log('generate async 2');
   const uint8Array = new Uint8Array(arrayBuffer);
+  console.log('generate async 3');
   return uint8Array;
 };
 export const extractZip = async (zipBuffer, tempPath) => {
