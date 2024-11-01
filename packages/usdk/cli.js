@@ -2053,9 +2053,12 @@ const deploy = async (args) => {
     for (const agentSpec of agentSpecs) {
       const { directory } = agentSpec;
 
+      console.log('pack zip 1', directory);
       const uint8Array = await packZip(directory, {
         exclude: [/\/node_modules\//],
       });
+      console.log('pack zip 2', uint8Array);
+      return;
       // upload the agent
       const u = `${deployEndpointUrl}/agent`;
       const req = https.request(u, {
