@@ -3,9 +3,47 @@ import fs from 'fs';
 import recursiveReaddir from 'recursive-readdir';
 import { mkdirp } from 'mkdirp';
 import { rimraf } from 'rimraf';
-import JSZip from 'jszip';
+// import JSZip from 'jszip';
+import archiver from 'archiver';
 import { QueueManager } from 'queue-manager';
 
+const packZipWithArchiver = async (dirPath, { exclude }) => {
+  const outputPath = path.join(dirPath, 'output.zip');
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver('zip', {
+    zlib: { level: 9 }, // Set compression level
+  });
+
+  return new Promise((resolve, reject) => {
+    archive.pipe(output);
+
+    archive.on('error', (err) => {
+      reject(err);
+    });
+
+    output.on('close', () => {
+      const data = fs.readFileSync(outputPath);
+      const uary = new Uint8Array(data)
+      fs.unlinkSync(outputPath); // Remove the temporary zip file after reading it
+      resolve(uary);
+    });
+
+    // Filter files and add to archive
+    recursiveReaddir(dirPath)
+      .then((files) => {
+        const filteredFiles = filterFiles(files, exclude);
+
+        filteredFiles.forEach((file) => {
+          const relativePath = path.relative(dirPath, file);
+          archive.file(file, { name: relativePath });
+        });
+
+        // Finalize the archive once all files are appended
+        archive.finalize().catch((err) => reject(err));
+      })
+      .catch((err) => reject(err));
+  });
+};
 export const packZip = async (dirPath, { exclude = [] } = {}) => {
   let files = await recursiveReaddir(dirPath);
   files = files.filter((p) => !exclude.some((re) => re.test(p)));
@@ -13,12 +51,38 @@ export const packZip = async (dirPath, { exclude = [] } = {}) => {
   console.log('got jszip 1');
   const zip = new JSZip();
   console.log('got jszip 2');
+  const queueManager = new QueueManager({
+    parallelism: 10,
+  });
   for (const p of files) {
-    const basePath = p.slice(dirPath.length + 1);
-    const stream = fs.createReadStream(p);
-    // console.log('zip file 1', basePath);
-    zip.file(basePath, stream);
-    // console.log('zip file 2', basePath);
+    await queueManager.waitForTurn(async () => {
+      const basePath = p.slice(dirPath.length + 1);
+      const stream = fs.createReadStream(p);
+      // console.log('zip file 1', basePath);
+      zip.file(basePath, stream);
+      // console.log('zip file 2', basePath);
+
+      // wait for the stream to finish
+      await new Promise((resolve, reject) => {
+        const end = () => {
+          console.log('got end');
+          resolve();
+          cleanup();
+        };
+        stream.on('end', end);
+        const error = (e) => {
+          console.log('got error', e);
+          reject(e);
+          cleanup();
+        }
+        stream.on('error', error);
+
+        const cleanup = () => {
+          stream.removeListener('end', end);
+          stream.removeListener('error', error);
+        };
+      });
+    });
   }
 
   console.log('generate async 1');
