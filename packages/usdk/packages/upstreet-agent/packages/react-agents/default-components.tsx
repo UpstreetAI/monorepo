@@ -1477,6 +1477,7 @@ export const MultimediaSense = () => {
   const conversation = useConversation();
   const authToken = useAuthToken();
   const randomId = useMemo(getRandomId, []);
+  const [interestedMedia, setInterestedMedia] = useState([]);
 
   // XXX be able to query media other than that from the current conversation
   const messages = conversation.messageCache.getMessages();
@@ -1488,12 +1489,21 @@ export const MultimediaSense = () => {
 
   return attachments.length > 0 && (
     <Action
-      name="mediaPerception"
+      name="updateMediaPerception"
       description={
         dedent`\
-          Query multimedia content using natural language questions + answers.
-          The questions should be short and specific.
-          Use this whenever you need to know more information about a piece of media, like an image attachment.
+          Use this to signal interest or loss of interest in a piece of media for perception.
+          \`interestedOnce\`: interested in the media for one message.
+          \`interestedAlways\`: interested in the media until further notice (e.g. a video stream).
+          \`lostInterest\`: no longer interested in the media.
+          \`id\`: the id of the media.
+
+          The current set of interested media is:
+          \`\`\`
+        ` + '\n' +
+        JSON.stringify(interestedMedia, null, 2) + '\n' +
+        dedent`\
+          \`\`\`
 
           The available media are:
           \`\`\`
@@ -1504,34 +1514,29 @@ export const MultimediaSense = () => {
         `
       }
       schema={
-        z.object({
-          // type: z.enum(types),
-          id: z.string(),
-          questions: z.array(z.string()),
-        })
+        z.array(
+          z.object({
+            type: z.union([
+              z.literal('interestedOnce'),
+              z.literal('interestedAlways'),
+              z.literal('lostInterest'),
+            ]),
+            id: z.string(),
+          })
+        )
       }
       examples={[
         {
-          // type: 'image/jpeg',
+          type: 'interestedOnce',
           id: randomId,
-          questions: [
-            'Describe the image.',
-          ],
         },
         {
-          // type: 'image/jpeg',
+          type: 'interestedAlways',
           id: randomId,
-          questions: [
-            `What are the dimensions of the subject, in meters?`,
-          ],
         },
         {
-          // type: 'image/jpeg',
+          type: 'lostInterest',
           id: randomId,
-          questions: [
-            `Describe the people in the image.`,
-            `What's the mood/aesthetic?`,
-          ],
         },
       ]}
       handler={async (e: PendingActionEvent) => {
@@ -1540,12 +1545,12 @@ export const MultimediaSense = () => {
           agent,
           message: {
             args: {
+              type,
               id: attachmentId,
-              questions,
             },
           },
         } = e.data;
-        const retry = () => {
+        /* const retry = () => {
           agent.think();
         };
         const makeQa = (questions: string[], answers: string[]) => {
@@ -1648,7 +1653,7 @@ export const MultimediaSense = () => {
             attachment,
           });
           retry();
-        }
+        } */
       }}
     />
   )
