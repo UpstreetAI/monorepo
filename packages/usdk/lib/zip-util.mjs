@@ -7,6 +7,13 @@ import JSZip from 'jszip';
 import archiver from 'archiver';
 import { QueueManager } from 'queue-manager';
 
+// Helper function to filter files with regular expressions
+const filterFiles = (files, excludePatterns) => {
+  return files.filter((file) =>
+    !excludePatterns.some((pattern) => pattern.test(file))
+  );
+};
+
 export const packZip = async (dirPath, { exclude = [] } = {}) => {
   const outputPath = path.join(dirPath, 'output.zip');
   const output = fs.createWriteStream(outputPath);
