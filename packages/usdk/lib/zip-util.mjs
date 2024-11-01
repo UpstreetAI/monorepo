@@ -16,9 +16,9 @@ export const packZip = async (dirPath, { exclude = [] } = {}) => {
   for (const p of files) {
     const basePath = p.slice(dirPath.length + 1);
     const stream = fs.createReadStream(p);
-    console.log('zip file 1', basePath);
+    // console.log('zip file 1', basePath);
     zip.file(basePath, stream);
-    console.log('zip file 2', basePath);
+    // console.log('zip file 2', basePath);
   }
 
   console.log('generate async 1');
