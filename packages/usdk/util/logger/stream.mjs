@@ -1,10 +1,10 @@
 import readline from 'readline';
 
 class StreamStrategy {
-  constructor(readableStream) {
+  constructor(stream) {
     this.rl = readline.createInterface({
-      input: readableStream,
-      output: process.stdout
+      input: stream,
+      output: stream,
     });
   }
 
