@@ -244,6 +244,7 @@ export const create = async (args, opts) => {
   const features = typeof args.feature === 'string' ? JSON.parse(args.feature) : (args.feature || {});
   const yes = args.yes;
   const force = !!args.force;
+  const noInstall = !!args.noInstall;
   const forceNoConfirm = !!args.forceNoConfirm;
   // opts
   const jwt = opts.jwt;
@@ -385,8 +386,10 @@ export const create = async (args, opts) => {
   await _copyFiles();
 
   // npm install
-  console.log(pc.italic('Installing dependencies...'));
-  await npmInstall(dstDir);
+  if (!noInstall) {
+    console.log(pc.italic('Installing dependencies...'));
+    await npmInstall(dstDir);
+  }
 
   console.log('\nCreated agent at', ansi.link(path.resolve(dstDir)), '\n');
 };

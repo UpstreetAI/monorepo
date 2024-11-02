@@ -2580,6 +2580,7 @@ export const main = async () => {
     .option(`-j, --json <string>`, `Agent JSON string to initialize with (e.g '{"name": "Ally", "description": "She is cool"}')`)
     .option(`-y, --yes`, `Non-interactive mode`)
     .option(`-f, --force`, `Overwrite existing files`)
+    .option(`-n, --no-install`, `Do not install dependencies`)
     .option(`-F, --force-no-confirm`, `Overwrite existing files without confirming\nUseful for headless environments. ${pc.red('WARNING: Data loss can occur. Use at your own risk.')}`)
     .option(`-s, --source <string>`, `Main source file for the agent. ${pc.red('REQUIRED: Agent Json string must be provided using -j option')}`)
     .option(
