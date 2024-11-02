@@ -45,6 +45,7 @@ import { makeAgentSourceCode } from '../packages/upstreet-agent/packages/react-a
 import { consoleImagePreviewWidth } from '../packages/upstreet-agent/packages/react-agents/constants.mjs';
 import InterviewLogger from '../util/logger/interview-logger.mjs';
 import ReadlineStrategy from '../util/logger/readline.mjs';
+import StreamStrategy from '../util/logger/stream.mjs';
 import {
   cwd,
 } from '../util/directory-utils.mjs';
@@ -130,9 +131,12 @@ const buildWranglerToml = (
 };
 const interview = async (agentJson, {
   prompt,
+  stream,
   jwt,
 }) => {
-  const questionLogger = new InterviewLogger(new ReadlineStrategy());
+  const questionLogger = new InterviewLogger(
+    stream ? new StreamStrategy(stream) : new ReadlineStrategy()
+  );
   const getAnswer = (question) => {
     return questionLogger.askQuestion(question);
   };
@@ -234,6 +238,7 @@ export const create = async (args, opts) => {
   // args
   const dstDir = args._[0] ?? cwd;
   const prompt = args.prompt ?? '';
+  const stream = args.stream ?? null;
   const agentJsonString = args.json;
   const source = args.source;
   const features = typeof args.feature === 'string' ? JSON.parse(args.feature) : (args.feature || {});
@@ -295,6 +300,7 @@ export const create = async (args, opts) => {
     console.log(pc.italic('Starting the Interview process...\n'));
     agentJson = await interview(agentJson, {
       prompt,
+      stream,
       jwt,
     });
   }
@@ -419,6 +425,7 @@ export const edit = async (args, opts) => {
   // args
   const dstDir = args._[0] ?? cwd;
   const prompt = args.prompt ?? '';
+  const stream = args.stream ?? null;
   const addFeature = args.addFeature;
   const removeFeature = args.removeFeature;
   // opts
@@ -439,6 +446,7 @@ export const edit = async (args, opts) => {
   if (!(addFeature || removeFeature)) {
     agentJson = await interview(agentJson, {
       prompt,
+      stream,
       jwt,
     });
   }
