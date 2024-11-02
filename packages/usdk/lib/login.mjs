@@ -1,10 +1,10 @@
-import path from 'path';
-import fs from 'fs';
+// import path from 'path';
+// import fs from 'fs';
 import https from 'https';
 import readline from 'readline';
 
 import open from 'open';
-import { mkdirp } from 'mkdirp';
+// import { mkdirp } from 'mkdirp';
 import { rimraf } from 'rimraf';
 import { QueueManager } from '../packages/upstreet-agent/packages/queue-manager/queue-manager.mjs';
 import {

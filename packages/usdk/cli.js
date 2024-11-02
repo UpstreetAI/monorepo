@@ -40,7 +40,6 @@ import {
 } from './packages/upstreet-agent/packages/react-agents-local/util/hosts.mjs';
 import {
   makeAnonymousClient,
-  getUserIdForJwt,
   getUserForJwt,
 } from './packages/upstreet-agent/packages/react-agents/util/supabase-client.mjs';
 import { cwd } from './util/directory-utils.mjs';
@@ -85,14 +84,17 @@ import {
 import { getLoginJwt } from './util/login-util.mjs';
 import {
   loginLocation,
-  wranglerTomlPath,
 } from './lib/locations.mjs';
 import {
   login,
   logout,
+  status,
   create,
   edit,
 } from './lib/commands.mjs';
+import {
+  env,
+} from './lib/env.mjs';
 import {
   consoleImageWidth,
 } from './packages/upstreet-agent/packages/react-agents/constants.mjs';
@@ -110,9 +112,6 @@ import { makeCorsHeaders, getServerOpts } from './util/server-utils.mjs';
 
 globalThis.WebSocket = WebSocket; // polyfill for multiplayer library
 
-const wranglerTomlString = fs.readFileSync(wranglerTomlPath, 'utf8');
-const wranglerToml = toml.parse(wranglerTomlString);
-const env = wranglerToml.vars;
 const makeSupabase = (jwt) => makeAnonymousClient(env, jwt);
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const shortName = () => uniqueNamesGenerator({
@@ -266,53 +265,6 @@ const getAssetJson = async (supabase, guid) => {
 
 //
 
-const status = async (args) => {
-  const jwt = await getLoginJwt();
-  if (jwt !== null) {
-    const userId = await getUserIdForJwt(jwt);
-
-    const supabase = makeSupabase(jwt);
-    const result = await supabase
-      .from('accounts')
-      .select('*')
-      .eq('id', userId)
-      .maybeSingle();
-    const { error, data } = result;
-    if (!error) {
-      console.log('user', data);
-
-      const { active_asset } = data;
-      if (active_asset) {
-        // print the currently worn character
-        const assetResult = await supabase
-          .from('assets')
-          .select('*')
-          .eq('id', active_asset)
-          .eq('type', 'npc')
-          .maybeSingle();
-        const { error, data } = assetResult;
-        if (!error) {
-          if (data) {
-            console.log('wearing', data);
-          } else {
-            console.warn('failed to fetch worn avatar', active_asset);
-          }
-        } else {
-          console.log(`could not get asset ${userId}: ${error}`);
-        }
-      } else {
-        console.log('not wearing an avatar');
-      }
-    } else {
-      console.log(`could not get account ${userId}: ${error}`);
-    }
-  } else {
-    console.log('not logged in');
-  }
-
-  // const localGuid = await ensureLocalGuid();
-  // console.log(`local guid is ${localGuid}`);
-};
 /* const wear = async (args) => {
   const guid = args._[0] ?? '';
 
