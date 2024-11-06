@@ -106,6 +106,49 @@ const jsonParse = (s) => {
   }
 };
 
+// XXX JSON stream parsing hack
+import { Tokenizer } from '@streamparser/json-whatwg';
+import { TokenParser } from '@streamparser/json-whatwg';
+const testJsonStreamParser = () => {
+  const tokenizer = new Tokenizer({
+    emitPartialTokens: true,
+  });
+  const parser = new TokenParser({
+    emitPartialValues: true,
+  });
+
+  (async () => {
+    const tokenReader = tokenizer.readable.getReader();
+    const parserWriter = parser.writable.getWriter();
+    for (;;) {
+      const { done, value: _value } = await tokenReader.read();
+      if (done) {
+        break;
+      }
+      const { token, value, offset, partial } = _value;
+      console.log('token', _value);
+      if (!partial) {
+        parserWriter.write(_value);
+      }
+    }
+  })();
+  (async () => {
+    const parserReader = parser.readable.getReader();
+    for (;;) {
+      const { done, value } = await parserReader.read();
+      if (done) {
+        break;
+      }
+      console.log('parse', value);
+    }
+  })();
+  const tokenWriter = tokenizer.writable.getWriter();
+  tokenWriter.write(`{"key": "val`);
+  tokenWriter.write(`"`);
+  tokenWriter.write(`}`);
+};
+testJsonStreamParser();
+
 //
 
 const ensureLocalGuid = async () => {
