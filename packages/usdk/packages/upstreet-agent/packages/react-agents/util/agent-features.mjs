@@ -174,6 +174,41 @@ export const featureSpecs = [
     },
   },
   {
+    name: 'twitterBot',
+    description: dedent`\
+      Add a Twitter bot to the agent.
+
+      The API token is required.
+    `,
+    schema: z.union([
+      z.object({
+        token: z.string(),
+      }),
+      z.null(),
+    ]),
+    examples: [{ token: 'YOUR_TWITTER_BOT_TOKEN', }],
+    imports: (twitterBot) => {
+      if (twitterBot.token) {
+        return ['TwitterBot'];
+      } else {
+        return [];
+      }
+    },
+    components: (twitterBot) => {
+      if (twitterBot.token) {
+        return [
+          dedent`
+            <TwitterBot
+              token=${JSON.stringify(twitterBot.token)}
+            />
+          `,
+        ];
+      } else {
+        return [];
+      }
+    },
+  },
+  {
     name: 'telnyx',
     description: dedent`\
       Add Telnyx phone call/SMS support to the agent. Add this feature only when the user explicitly requests it and provides an api key.

@@ -113,6 +113,12 @@ export type DiscordBotArgs = {
   agent: ActiveAgentObject;
 };
 
+// twitter
+
+export type TwitterBotProps = {
+  token: string;
+};
+
 // telnyx
 
 export type TelnyxProps = {

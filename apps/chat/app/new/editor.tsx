@@ -71,6 +71,9 @@ type FeaturesObject = {
     token: string;
     channels: string;
   } | null;
+  twitterBot: {
+    token: string;
+  } | null;
 };
 type AgentEditorProps = {
   user: any;
@@ -115,6 +118,7 @@ export default function AgentEditor({
     rateLimit: null,
     storeItems: null,
     discordBot: null,
+    twitterBot: null,
   });
   const [sourceCode, setSourceCode] = useState(() => makeAgentSourceCode(features));
 
@@ -214,6 +218,9 @@ export default function AgentEditor({
   const makeDefaultDiscordBot = () => ({
     token: '',
     channels: '',
+  });
+  const makeDefaultTwitterBot = () => ({
+    token: '',
   });
   const makeEmptyStoreItems = () => [
     makeEmptyStoreItem(),
@@ -893,6 +900,32 @@ export default function AgentEditor({
                     },
                   }));
                 }} placeholder="text, voice" required />
+              </label>
+            </div>}
+          </div>
+          {/* twitter bot */}
+          <div className="flex flex-col">
+            <label className="flex">
+              <input type="checkbox" checked={!!features.twitterBot} onChange={e => {
+                setFeatures({
+                  ...features,
+                  twitterBot: e.target.checked ? makeDefaultTwitterBot() : null,
+                });
+              }} />
+              <div className="px-2">Twitter bot</div>
+            </label>
+            {features.twitterBot && <div className="flex flex-col">
+              {/* token */}
+              <label className="flex">
+                <div className="mr-2 min-w-32">Token</div>
+                <input type="text" value={features.twitterBot.token} onChange={e => {
+                  setFeatures(features => ({
+                    ...features,
+                    twitterBot: {
+                      token: e.target.value,
+                    },
+                  }));
+                }} placeholder="<bot token>" required />
               </label>
             </div>}
           </div>

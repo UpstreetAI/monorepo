@@ -5,6 +5,7 @@ import { printNode, zodToTs } from 'zod-to-ts';
 import type { Browser, BrowserContext, Page } from 'playwright-core';
 import { minimatch } from 'minimatch';
 import { timeAgo } from 'react-agents/util/time-ago.mjs';
+import { Client as TwitterClient } from 'twitter-api-sdk';
 
 import type {
   AppContextValue,
@@ -35,6 +36,7 @@ import type {
   DiscordBotRoomSpecs,
   DiscordBotProps,
   DiscordBotArgs,
+  TwitterBotProps,
   TelnyxProps,
   TelnyxBotArgs,
 } from './types';
@@ -3244,6 +3246,51 @@ export const DiscordBot: React.FC<DiscordBotProps> = (props: DiscordBotProps) =>
     JSON.stringify(dms),
     JSON.stringify(userWhitelist),
   ]);
+
+  return null;
+};
+// https://github.com/xdevplatform/twitter-api-typescript-sdk
+// twurl authorize --consumer-key XXX --consumer-secret XXX
+// less ~/.twurlrc
+export const TwitterBot: React.FC<TwitterBotProps> = (props: TwitterBotProps) => {
+  const {
+    token,
+  } = props;
+  // const agent = useAgent();
+
+  useEffect(() => {
+    (async () => {
+      if (token) {
+        // console.log('twitter client 1', token);
+        const client = new TwitterClient(token, {
+          endpoint: `https://ai.upstreet.ai/api/twitter`,
+        });
+        // console.log('twitter client 2', client);
+
+        const tweet = await client.tweets.findTweetById('20');
+        console.log('tweet', tweet);
+
+        /* // Tell typescript it's a readonly app
+        const readOnlyClient = twitterClient.readOnly;
+
+        // Play with the built in methods
+        const user = await readOnlyClient.v2.userByUsername('plhery');
+        await twitterClient.v2.tweet('Hello, this is a test.');
+        // You can upload media easily!
+        // await twitterClient.v1.uploadMedia('./big-buck-bunny.mp4');
+
+        console.log('twitter client 2', twitterClient);
+
+        try {
+          await twitterClient.v2.tweet('Hello, this is a test.');
+
+          console.log('Tweet sent successfully');
+        } catch (error) {
+          console.error('Error sending tweet:', error);
+        } */
+      }
+    })();
+  }, [token]);
 
   return null;
 };
