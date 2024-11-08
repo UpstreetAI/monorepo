@@ -4,11 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { AgentList } from './AgentList';
 import { useSupabase } from '@/lib/hooks/use-supabase';
 import { Button } from 'ucom';
+import { Agent, useAgents } from '@/contexts/AgentContext';
 
-export interface Agent {
-  id: number;
-  name: string;
-}
 
 export interface AgentsProps {
   loadmore: boolean;
@@ -22,7 +19,7 @@ export interface UserAgentsProps {
   search: boolean;
   range: number;
   row: boolean;
-  agents: Agent[];
+  userAgents: Agent[];
   user: any;
 }
 
@@ -131,7 +128,7 @@ export function Agents({ loadmore = false, search = true, range = 5, row = false
       )}
 
       <div className={`grid ${row ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-4`}>
-        <AgentList agents={agents} loading={loading} range={range} user={null} onAgentDelete={handleAgentDelete}/>
+        <AgentList agents={agents} loading={loading} range={range} user={null} />
       </div>
       {loadmore && (
         <div className='text-center pt-8'>
@@ -149,19 +146,19 @@ export function Agents({ loadmore = false, search = true, range = 5, row = false
   );
 }
 
-export function UserAgents({ agents = [], user, range = 5, row = false }: UserAgentsProps) {
-  const [userAgents, setUserAgents] = useState<Agent[]>(agents);
+export function UserAgents({ userAgents = [], user, range = 5, row = false }: UserAgentsProps) {
+  const { agents , setAgents} = useAgents();
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleUserAgentDelete = (deletedAgentId: number) => {
-    setUserAgents(userAgents => userAgents.filter(agent => agent.id !== deletedAgentId));
-  };
+  useEffect(() => {
+    setAgents(userAgents);
+  }, [userAgents]);
 
   return (
     <>
       <div className={`grid ${row ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-4`}>
-        <AgentList agents={userAgents} loading={loading} range={range} user={user} onAgentDelete={handleUserAgentDelete} />
+        <AgentList agents={agents} loading={loading} range={range} user={user}/>
       </div>
     </>
   );

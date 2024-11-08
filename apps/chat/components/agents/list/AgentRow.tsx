@@ -7,22 +7,23 @@ import { AgentDelete } from "@/components/cta/AgentDelete";
 import { getJWT } from '@/lib/jwt';
 import { deployEndpointUrl } from '@/utils/const/endpoints';
 import { DeleteAgentDialog } from '@/components/delete-agent-dialog';
+import { useAgents } from '@/contexts/AgentContext';
 
 export interface AgentListProps {
   agent: any
   user: any
   author: string
-  onDelete: (agentId: number) => void;
 }
 
-export function AgentRow({ agent, user, author, onDelete }: AgentListProps) {
+export function AgentRow({ agent, user, author }: AgentListProps) {
+  const { deleteAgent } = useAgents();
   const [open, setOpen] = useState(false);
 
   const updateOpenState = () => {
     setOpen(!open);
   }
 
-  const deleteAgent = async () => {
+  const deleteDeployedAgent = async () => {
     try {
       const jwt = await getJWT();
       const res = await fetch(`${deployEndpointUrl}/agent`, {
@@ -43,8 +44,8 @@ export function AgentRow({ agent, user, author, onDelete }: AgentListProps) {
   }
   const handleDelete = async () => {
     updateOpenState();
-    await deleteAgent();
-    onDelete(agent.id);
+    await deleteDeployedAgent();
+    deleteAgent(agent.id);
   };
 
   const handleDeleteClick = () => {
