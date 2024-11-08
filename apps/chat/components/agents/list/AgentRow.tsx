@@ -12,9 +12,10 @@ export interface AgentListProps {
   agent: any
   user: any
   author: string
+  onDelete: (agentId: number) => void;
 }
 
-export function AgentRow({ agent, user, author }: AgentListProps) {
+export function AgentRow({ agent, user, author, onDelete }: AgentListProps) {
   const [open, setOpen] = useState(false);
 
   const updateOpenState = () => {
@@ -43,6 +44,7 @@ export function AgentRow({ agent, user, author }: AgentListProps) {
   const handleDelete = async () => {
     updateOpenState();
     await deleteAgent();
+    onDelete(agent.id);
   };
 
   const handleDeleteClick = () => {
