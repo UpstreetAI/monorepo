@@ -178,7 +178,7 @@ export class ChatsManager {
       playersMap.addEventListener('join', (e: any) => {
         const { player } = e.data;
         const { playerId } = player;
-        console.log('chats specification: remote player joined:', playerId);
+        console.log('chats specification: remote player joined:', playerId, ' room: ', room);
 
         const remotePlayer = new Player(playerId, {});
         conversation.addAgent(playerId, remotePlayer);
