@@ -698,9 +698,22 @@ const formatAgent = (agent: any) => {
 };
 export const CharactersPrompt = () => {
   const conversation = useConversation();
-  const agents = conversation.getAgents();
+
   const name = useName();
   const bio = usePersonality();
+  const [agents, setAgents] = useState(conversation.getAgents());
+
+  useEffect(() => {
+    const updateAgents = () => setAgents(conversation.getAgents());
+
+    conversation.addEventListener('agentsUpdated', updateAgents);
+
+    return () => {
+      conversation.removeEventListener('agentsUpdated', updateAgents);
+    };
+  }, [conversation]);
+
+
   const currentAgentSpec = {
     name,
     // id,
