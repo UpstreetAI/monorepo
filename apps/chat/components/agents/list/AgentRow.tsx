@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import { isValidUrl } from "@/utils/helpers/urls";
 import { AgentJoin } from "@/components/cta";
-import { AgentDelete } from "@/components/cta/AgentDelete";
 import { getJWT } from '@/lib/jwt';
 import { deployEndpointUrl } from '@/utils/const/endpoints';
 import { DeleteAgentDialog } from '@/components/delete-agent-dialog';
+import AgentDelete from '@/components/cta/AgentDelete';
 
 export interface AgentListProps {
   agent: any

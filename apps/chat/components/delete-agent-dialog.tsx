@@ -27,7 +27,7 @@ export function DeleteAgentDialog({
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
-                {React.cloneElement(children, { onClick: onCancel })}
+                {children}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
