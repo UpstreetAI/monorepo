@@ -14,8 +14,8 @@ export {
   pull,
 } from './create.mjs';
 export {
-  deploy,
-} from './deploy.mjs';
+  publish,
+} from './publish.mjs';
 export {
   chat,
 } from './chat.mjs';

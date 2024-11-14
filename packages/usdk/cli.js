@@ -79,7 +79,7 @@ import {
   create,
   edit,
   pull,
-  deploy,
+  publish,
   chat,
 } from './lib/commands.mjs';
 import {
@@ -1644,7 +1644,7 @@ export const main = async () => {
       });
     program
       .command('pull')
-      .description('Download source of deployed agent')
+      .description('Download source of a published agent')
       .argument('<guid>', 'Guid of the agent')
       .argument(`[directory]`, `The directory to create the project in`)
       .option(`-f, --force`, `Overwrite existing files`)
@@ -1794,39 +1794,10 @@ export const main = async () => {
     //       await capture(args);
     //     });
     //   });
-    program
-      .command('deploy')
-      .description('Deploy an agent to the network')
-      .argument(`[guids...]`, `Guids of the agents to deploy`)
-      // .argument(
-      //   `[type]`,
-      //   `Type of deployment to perform, one of ${JSON.stringify([deploymentTypes])}`,
-      // )
-      .action(async (agentRefs, opts = {}) => {
-        await handleError(async () => {
-          commandExecuted = true;
-
-          const outputStream = new stream.PassThrough();
-          outputStream.pipe(process.stdout);
-
-          let args;
-          args = {
-            _: [agentRefs],
-            ...opts,
-            outputStream,
-          };
-
-          const jwt = await getLoginJwt();
-
-          await deploy(args, {
-            jwt,
-          });
-        });
-      });
     // const networkOptions = ['baseSepolia', 'opMainnet'];
     program
       .command('agents')
-      .description('List the currently deployed agents')
+      .description('List the currently published agents')
       // .option(
       //   `-n, --network <networkId>`,
       //   `The blockchain network to use for querying agent wallets; one of ${JSON.stringify(networkOptions)}`,
@@ -1855,8 +1826,37 @@ export const main = async () => {
         });
       });
     program
+    .command('publish')
+    .description('Publish an agent to the network')
+    .argument(`[guids...]`, `Guids of the agents to publish`)
+    // .argument(
+    //   `[type]`,
+    //   `Type of deployment to perform, one of ${JSON.stringify([deploymentTypes])}`,
+    // )
+    .action(async (agentRefs, opts = {}) => {
+      await handleError(async () => {
+        commandExecuted = true;
+
+        const outputStream = new stream.PassThrough();
+        outputStream.pipe(process.stdout);
+
+        let args;
+        args = {
+          _: [agentRefs],
+          ...opts,
+          outputStream,
+        };
+
+        const jwt = await getLoginJwt();
+
+        await publish(args, {
+          jwt,
+        });
+      });
+    });
+    program
       .command('unpublish')
-      .description('Unpublish a deployed agent from the network')
+      .description('Unpublish an agent from the network')
       .argument(`[guids...]`, `Guids of the agents to unpublish`)
       .action(async (guids = '', opts) => {
         await handleError(async () => {
