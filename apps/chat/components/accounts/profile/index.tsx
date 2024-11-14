@@ -9,7 +9,7 @@ interface AgentImage {
 }
 
 interface Agent {
-  id: string;
+  id: number;
   name: string;
   images: AgentImage[];
 }
@@ -30,6 +30,10 @@ export function AccountProfile({ account }: AccountProps) {
   const origin = window.location.origin;
   const agentUrl = `${origin}/accounts/${account.id}`;
   const randomAgentImage = account.agents[Math.floor(Math.random() * account.agents.length)]?.images[0].url;
+
+  const onDelete = (agentId: number) => {
+    account.agents = account.agents.filter((agent) => agent.id !== agentId);
+  };
 
   return (
     <div className="w-full mx-auto">
@@ -63,7 +67,7 @@ export function AccountProfile({ account }: AccountProps) {
       <div className="w-full max-w-6xl mx-auto relative px-4 mt-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-8">
           {account.agents.map((agent) => (
-            <AgentRow key={agent.id} agent={agent} author={account.name} user={null} />
+            <AgentRow key={agent.id} agent={agent} author={account.name} user={null} onDelete={onDelete}/>
           ))}
         </div>
       </div>

@@ -105,6 +105,10 @@ export function Agents({ loadmore = false, search = true, range = 5, row = false
     fetchData(false, newRangeFrom, newRangeTo);
   };
 
+  const handleAgentDelete = (deletedAgentId: number) => {
+    setAgents(agents => agents.filter(agent => agent.id !== deletedAgentId));
+  };
+
   return (
     <>
       {search && (
@@ -127,7 +131,7 @@ export function Agents({ loadmore = false, search = true, range = 5, row = false
       )}
 
       <div className={`grid ${row ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'} gap-4`}>
-        <AgentList agents={agents} loading={loading} range={range} user={null} />
+        <AgentList agents={agents} loading={loading} range={range} user={null} onAgentDelete={handleAgentDelete}/>
       </div>
       {loadmore && (
         <div className='text-center pt-8'>
@@ -150,10 +154,14 @@ export function UserAgents({ agents = [], user, range = 5, row = false }: UserAg
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const handleUserAgentDelete = (deletedAgentId: number) => {
+    setUserAgents(userAgents => userAgents.filter(agent => agent.id !== deletedAgentId));
+  };
+
   return (
     <>
       <div className={`grid ${row ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-4`}>
-        <AgentList agents={userAgents} loading={loading} range={range} user={user} />
+        <AgentList agents={userAgents} loading={loading} range={range} user={user} onAgentDelete={handleUserAgentDelete} />
       </div>
     </>
   );
