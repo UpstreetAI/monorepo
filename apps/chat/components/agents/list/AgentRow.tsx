@@ -15,11 +15,8 @@ export interface AgentListProps {
 }
 
 export function AgentRow({ agent, user, author }: AgentListProps) {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const updateOpenState = () => {
-    setOpen(!open);
-  }
 
   const deleteAgent = async () => {
     try {
@@ -40,17 +37,20 @@ export function AgentRow({ agent, user, author }: AgentListProps) {
       console.error('Failed to delete agent:', error);
     }
   }
-  const handleDelete = async () => {
-    updateOpenState();
+  const handleDeleteConfirmation = async () => {
+    setOpen(false);
+    
+    setLoading(true);
     await deleteAgent();
+    setLoading(false);
   };
 
-  const handleDeleteClick = () => {
-    updateOpenState();
+  const handleDeleteComponentClick = () => {
+    setOpen(true);
   }
 
   return (
-    <div className="bg-gray-100 border p-4 text-black">
+    <div className={`bg-gray-100 border p-4 text-black ${loading ? 'pointer-events-none opacity-50' : ''}`}>
       <div className="flex">
         <div className="mr-4 size-[120px] min-w-[120px] md:size-[160px] md:min-w-[160px] flex items-center justify-center">
           <div
@@ -83,8 +83,8 @@ export function AgentRow({ agent, user, author }: AgentListProps) {
 
           {user && (
             <div className="flex absolute top-0 right-0">
-              <DeleteAgentDialog agent={agent} onDelete={handleDelete} open={open} onCancel={() => setOpen(false)}>
-                <AgentDelete handleClick={handleDeleteClick} />
+              <DeleteAgentDialog agent={agent} onDelete={handleDeleteConfirmation} open={open} onCancel={() => setOpen(false)}>
+                <AgentDelete handleClick={handleDeleteComponentClick} loading={loading} />
               </DeleteAgentDialog>
             </div>
           )}
