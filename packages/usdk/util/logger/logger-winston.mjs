@@ -8,7 +8,7 @@ class WinstonLogger extends Logger {
     super();
     const currentDateTime = new Date().toISOString().replace(/[:.]/g, '-');
     const currentModuleDir = getLogDirectory();
-    const logFilePath = path.join(currentModuleDir, `log-${currentDateTime}.log`);
+    this.logFilePath = path.join(currentModuleDir, `log-${currentDateTime}.log`);
 
     this.logger = winston.createLogger({
       level: 'error',
@@ -19,7 +19,7 @@ class WinstonLogger extends Logger {
         })
       ),
       transports: [
-        new winston.transports.File({ filename: logFilePath, name: 'error-file', level: 'info'}),
+        new winston.transports.File({ filename: this.logFilePath, name: 'error-file', level: 'info'}),
         new winston.transports.Console()
       ]
     });
@@ -37,6 +37,10 @@ class WinstonLogger extends Logger {
 
   error(...args) {
     this.logger.error(...args);
+  }
+
+  getLogFilePath() {
+    return this.logFilePath;
   }
 }
 

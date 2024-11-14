@@ -120,6 +120,16 @@ const logger = LoggerFactory.getLogger();
   };
 });
 
+// Set up global error handling
+['uncaughtException', 'unhandledRejection'].forEach(event =>
+  process.on(event, (err, err2) => {
+    console.error('cli uncaught exception', err, err2);
+    console.log("A complete log of this run can be found in: \n", logger.getLogFilePath());
+    process.exit(1);
+  })
+);
+
+
 //
 
 const makeSupabase = (jwt) => makeAnonymousClient(env, jwt);
@@ -1377,7 +1387,8 @@ const handleError = async (fn) => {
     return await fn();
   } catch (err) {
     console.warn(err.stack);
-    process.exit(1);
+    console.log("A complete log of this run can be found in: \n", logger.getLogFilePath());
+    // process.exit(1);
   }
 };
 export const main = async () => {
