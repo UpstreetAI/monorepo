@@ -284,3 +284,14 @@ export class ReactAgentsMultiplayerConnection extends EventTarget {
     return this.realms.removeVideoSource(videoSource);
   }
 }
+export const connect = async ({
+  room,
+  profile,
+}) => {
+  const connection = new ReactAgentsMultiplayerConnection({
+    room,
+    profile,
+  });
+  await connection.waitForConnect();
+  return connection;
+};

@@ -100,6 +100,7 @@ import {
   generateMnemonic,
 } from './util/ethereum-utils.mjs';
 import LoggerFactory from './util/logger/logger-factory.mjs';
+import { getLatestVersion } from './lib/version.mjs';
 
 globalThis.WebSocket = WebSocket; // polyfill for multiplayer library
 
@@ -1382,6 +1383,19 @@ const handleError = async (fn) => {
 };
 export const main = async () => {
   try {
+
+    const ver = version();
+    const latestVersion = getLatestVersion();
+
+    const isLatestVersion = latestVersion === ver;
+
+    if (!isLatestVersion) {
+      console.log(pc.yellow(`Notice: You are currently using version ${ver}, a newer version (${latestVersion}) is available.`));
+      console.log(pc.cyan(`To update, run 'npm i usdk -g' or 'npm update usdk'.`));
+    }
+
+    program.version(ver);
+
     let commandExecuted = false;
     program
       .name('usdk')
@@ -1391,9 +1405,6 @@ export const main = async () => {
           process.exit(0);
         }
       });
-
-    const ver = version();
-    program.version(ver);
 
     // misc
     program
