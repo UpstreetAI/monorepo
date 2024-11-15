@@ -52,6 +52,8 @@ import StreamStrategy from '../util/logger/stream.mjs';
 import { cwd } from '../util/directory-utils.mjs';
 import { makeId } from '../packages/upstreet-agent/packages/react-agents/util/util.mjs';
 import ora from 'ora';
+import ImagePreviewServer from '../util/image-preview-server.mjs';
+import { imagePreviewPort } from '../util/ports.mjs';
 
 //
 
@@ -186,6 +188,13 @@ const interview = async (agentJson, {
       ? new StreamStrategy(inputStream, outputStream)
       : new ReadlineStrategy(),
   );
+  const imagePreviewServer = new ImagePreviewServer(imagePreviewPort);
+
+  // setup SIGINT image preview server close handler
+  process.on('SIGINT', () => {
+    imagePreviewServer.stop();
+  })
+  
   const getAnswer = async (question) => {
     // console.log('get answer 1', {
     //   question,
@@ -294,6 +303,16 @@ const interview = async (agentJson, {
       if (signal.aborted) return;
 
       const b = Buffer.from(ab);
+      
+      // start server if not already running and update image
+      if (!imagePreviewServer.server) {
+          imagePreviewServer.start();
+      }
+      
+      // normalize the label to match the server's expectations
+      const normalizedLabel = label.toLowerCase().replace(/\s+updated \(preview\):$/i, '').trim();
+      imagePreviewServer.updateImage(normalizedLabel, b);
+      
       const jimp = await Jimp.read(b);
       if (signal.aborted) return;
 
@@ -303,6 +322,7 @@ const interview = async (agentJson, {
       } = imageRenderer.render(jimp.bitmap, consoleImagePreviewWidth, undefined);
       logAgentPropertyUpdate(label, '');
       console.log(imageText);
+      console.log(`\nView image at ${imagePreviewServer.getImageUrl(normalizedLabel)}\n`);
     };
     agentInterview.addEventListener('preview', imageLogger('Avatar updated (preview):'));
     agentInterview.addEventListener('homespace', imageLogger('Homespace updated (preview):'));
@@ -313,6 +333,7 @@ const interview = async (agentJson, {
   }
   const result = await agentInterview.waitForFinish();
   questionLogger.close();
+  imagePreviewServer.stop();
   return result;
 };
 const makeAgentJsonInit = ({
