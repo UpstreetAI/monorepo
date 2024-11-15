@@ -94,6 +94,9 @@ To say that simply, we want the Agent to know that it can fetch Pokémon details
 
 
 ```tsx
+
+import { z } from 'zod'; // [!code ++]
+
 const PokemonDexAssistant = () => {
 
     const fetchPokemonDetails = async (pokemonName: string) => { 
@@ -229,20 +232,21 @@ You can define multiple `<Action>` components, each tailored to a specific purpo
 
 ---
 
-Finally, we call `<PokeDexAssistant />` in our Agent's main code
+Finally, we call `<PokeDexAssistant />` in our Agent's main code:
 ```tsx title="agent.tsx"
 // ...
 
 export default function MyAgent() {
   return (
     <Agent>
-      <PokemonDexAssistant /> // [!code ++]
+        {/* [!code highlight] */} 
+      <PokemonDexAssistant />
     </Agent>
   );
 }
 ```
 
-You can see this code on GitHub [here](https://github.com/UpstreetAI/usdk-examples/blob/5d1e2299ff4a518c0791f8e3c8a49143eb1fecc2/pokedex/agent.tsx#L13).
+You can see the complete code for this component on GitHub [here](https://github.com/UpstreetAI/usdk-examples/blob/5d1e2299ff4a518c0791f8e3c8a49143eb1fecc2/pokedex/agent.tsx#L13).
 
 ### Step 4: Test out your Pokédex-like Agent!
 
