@@ -75,6 +75,23 @@ export const retry = async (fn/*: (() => any) | (() => Promise<any>)*/, numRetri
   throw new Error(`failed after ${numRetries} retries`);
 };
 
+export const delayedRetry = async (fn, delay, numRetries = 20) => {
+  try {
+    return await fn();
+  } catch (err) {
+    console.warn('delayed retry error', err);
+    for (let i = 1; i < numRetries; i++) {
+      await new Promise(resolve => setTimeout(resolve, delay));
+      try {
+        return await fn();
+      } catch (err) {
+        console.warn('delayed retry error', err);
+      }
+    }
+    throw new Error(`failed after ${numRetries} retries`);
+  }
+};
+
 const printZodNode = (z) => {
   let s = printNode(z);
   s = s.replace(/    /g, '  ');
