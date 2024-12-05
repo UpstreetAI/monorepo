@@ -121,7 +121,9 @@ export const deploy = async (args, opts) => {
   if (!agentSpecs.every((agentSpec) => !!agentSpec.directory)) {
     throw new Error('all agent specs must have directories');
   }
-  const outputStream = args.outputStream ?? null;
+
+  const outputStream = args.outputStream;
+
   // opts
   const jwt = opts.jwt;
   if (!jwt) {
