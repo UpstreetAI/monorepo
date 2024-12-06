@@ -176,9 +176,28 @@ export const featureSpecs = [
   {
     name: 'twitter',
     description: dedent`\
-      Add a Twitter bot to the agent.
+      Twitter integration allows your agent to interact with Twitter by responding to mentions.
 
-      The API token is required.
+      To set up Twitter integration:
+
+      1. Create a Twitter Developer Account:
+         - Go to https://developer.twitter.com/
+         - Sign up for a developer account if you haven't already
+         - Create a new project and application
+
+      2. Configure your application:
+         - Navigate to "Settings" > "User authentication settings"
+         - Select "Native app" (Public client) under "Type of App"
+         - Set Callback URI to "https://twitter-oauth.upstreet.ai"
+         - Save changes
+         - Copy OAuth 2.0 Client ID and Client Secret from "Keys and tokens"
+
+      3. Get your Twitter Token:
+         - Go to https://twitter-auth.upstreet.ai/
+         - Log in with your Client ID and Client Secret
+         - Copy the provided Twitter Token
+
+      The Twitter Token is required.
     `,
     schema: z.union([
       z.object({
