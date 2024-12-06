@@ -174,7 +174,7 @@ export const featureSpecs = [
     },
   },
   {
-    name: 'twitterBot',
+    name: 'twitter',
     description: dedent`\
       Add a Twitter bot to the agent.
 
@@ -187,19 +187,19 @@ export const featureSpecs = [
       z.null(),
     ]),
     examples: [{ token: 'YOUR_TWITTER_BOT_TOKEN', }],
-    imports: (twitterBot) => {
-      if (twitterBot.token) {
-        return ['TwitterBot'];
+    imports: (twitter) => {
+      if (twitter.token) {
+        return ['Twitter'];
       } else {
         return [];
       }
     },
-    components: (twitterBot) => {
-      if (twitterBot.token) {
+    components: (twitter) => {
+      if (twitter.token) {
         return [
           dedent`
-            <TwitterBot
-              token=${JSON.stringify(twitterBot.token)}
+            <Twitter
+              token=${JSON.stringify(twitter.token)}
             />
           `,
         ];
