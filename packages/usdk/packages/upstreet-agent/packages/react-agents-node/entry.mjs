@@ -43,22 +43,7 @@ const getEnv = async () => {
 const getAuth = async () => {
   const envTxtString = await fs.promises.readFile(envTxtPath, 'utf8');
   const envTxt = dotenv.parse(envTxtString);
-
-  const apiKey = envTxt.AGENT_TOKEN;
-  if (!apiKey) {
-    throw new Error('missing AGENT_TOKEN');
-  }
-
-  const mnemonic = envTxt.WALLET_MNEMONIC;
-  if (!mnemonic) {
-    throw new Error('missing WALLET_MNEMONIC');
-  }
-
-  const auth = {
-    AGENT_TOKEN: apiKey,
-    WALLET_MNEMONIC: mnemonic,
-  };
-  return auth;
+  return envTxt;
 };
 
 //

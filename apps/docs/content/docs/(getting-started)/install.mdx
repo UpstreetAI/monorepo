@@ -23,17 +23,35 @@ Before getting started, make sure you have the following:
   <Accordion title="1. A computer with a command-line interface">
    - **macOS**: Use the **Terminal** app, located in Applications > Utilities.  
    - **Linux**: Use the **Terminal** application, usually accessible from the applications menu.
-   - **Windows**: Use the **Command Prompt**. 
-   <Callout>**Important:** Avoid using PowerShell on **Windows** as it often has issues with NodeJS. If you must use PowerShell, you can try out [this possible solution.](/errors#running-usdk-in-powershell)</Callout>
+   - **Windows**: Use the **Command Prompt**. You can find the Command Prompt by hitting the Windows key (<kbd>⊞ Win</kbd>) and searching for the "Command Prompt" application.
+   <Callout>**Important:** We **do not** recommend using PowerShell or <kbd>⊞ Win</kbd>+<kbd>R</kbd> on **Windows** as it often has issues with NodeJS. If you **must** use PowerShell, you can try out [this possible solution.](/errors#running-usdk-in-powershell)</Callout>
 
   </Accordion>
   <Accordion title={`2. Node.js: ${formatNodeVersion(pkgJson.engines?.node || '>=22.9.0')} (required).`}>
     Node.js is the runtime environment that allows you to run JavaScript code outside a web browser.
     
-    To install Node.js:
+    ### Install Node.js
    - Go to the [Node.js downloads page](https://nodejs.org/en/download/package-manager/current).
    - Follow the instructions to install it as a package on your system, or download the installer for your OS and follow the setup steps.
    - Open the Terminal from step (1), and run `node -v` to see your Node version.
+
+   **NPM (Node Package Manager)** is a tool that comes installed alongside Node.js. It is used to manage packages (libraries, tools, frameworks, etc.) for JavaScript projects. With NPM, you can:
+
+- **Install packages** for your project locally or globally.
+- **Share your code** as packages with other developers.
+- **Run scripts** for development tasks like building or testing your project.
+
+NPM is bundled with Node.js because it's the default package manager for managing JavaScript dependencies in Node.js projects. When you install Node.js, NPM is automatically installed, so you don't need to install it separately in most cases. 
+
+You can **verify the installation of `npm`**:
+   - Open a terminal or command prompt.
+   - Run `node -v` to check the installed Node.js version.
+   - Run `npm -v` to check the installed NPM version.
+
+---
+
+Once you've installed NodeJS, you'll have access to both `node` and `npm` commands, enabling you to download and run JavaScript applications like `usdk`.
+
 
   </Accordion>
 </Accordions>
@@ -47,7 +65,6 @@ To install the `usdk` command-line tool, use the following command:
 <Tabs items={[
   "npm",
 ]}>
-  {/* "yarn" */}
  
 {/* ```bash tab="pnpm (recommended)"
 pnpm install -g usdk
@@ -57,13 +74,7 @@ pnpm install -g usdk
 npm install -g usdk
 ```
 
-{/* ```bash tab="yarn"
-yarn add -g usdk
-``` */}
-
 </Tabs>
-
-{/* We recommend using the [`pnpm`](https://pnpm.io/installation`) (Performant Node Package Manager) package manager with `usdk`. */}
 
 ### Verify Installation (optional)
 

@@ -1,0 +1,39 @@
+---
+title: <ChatLoop>
+description: Autonomously execute chat interactions.
+---
+
+## Import
+```tsx
+import { ChatLoop } from 'react-agents';
+```
+
+## Usage
+
+Add the component to your agent to initiate a chat loop that responds to "say" and "nudge" events:
+
+```tsx
+function MyAgent() {
+  return (
+    <Agent>
+      <ChatLoop
+        hint="Optional hint to guide the agent's responses"
+        actOpts={{ /* Optional action options */ }}
+        evaluator={customEvaluator} // Optional: Provide a custom evaluator
+      >
+        {/* Child components */}
+      </ChatLoop>
+    </Agent>
+  );
+}
+```
+
+The agent will evaluate and respond when it receives "say" events or targeted "nudge" events.
+
+## Props
+
+- `hint?: string` - Optional hint to guide the agent's responses
+- `actOpts?: object` - Optional configuration for action behavior  
+- `evaluator?: Evaluator` - Optional custom evaluator (mutually exclusive with hint/actOpts)
+
+Note: You cannot provide both an `evaluator` and `hint`/`actOpts` at the same time - this will throw an error.

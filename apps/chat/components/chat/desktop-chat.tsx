@@ -67,7 +67,7 @@ type AgentData = {
 function AgentAvatar({ agent, className }: { agent: AgentData, className?: string }) {
   console.log('agent', agent);
   return <div className={cn('relative flex overflow-hidden', className)}>
-    {agent && <img src={agent.previewUrl} alt={agent.name} className='w-[80px] h-[80px] mt-auto object-cover' />}
+    {agent && <img src={agent.previewUrl || '/images/user.png'} alt={agent.name} className='w-full h-full' />}
   </div>;
 }
 
@@ -146,7 +146,7 @@ export function DesktopChat({ className, room }: ChatProps) {
   const agentMessages = messages.filter(message => message.display && !message.display.props.isOwnMessage && message.display.props.name);
 
   const appQuit = () => {
-    (window as any).electron.ipcRenderer.send('app:quit');
+    (window as any).electron.send('app:quit');
   }
   
   return (

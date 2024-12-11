@@ -6,12 +6,29 @@ full: false
 
 [Crew.ai](https://www.crewai.com/) is a Python-based framework leverages artificial intelligence (AI) collaboration by orchestrating role-playing autonomous AI agents that work together as a cohesive assembly or “crew” to complete tasks.
 
-## Choosing between Crew.ai and Upstreet
+## Feature Comparison
 
-| | Upstreet                      | Crew.ai                      |
-|-|---------------------------|---------------------------|
-| **Languages** | JavaScript (React)         | Python  |
-| **Ease of use** | Easy to use               | Limited customization      |
-| **Performance** | Fast performance           | Requires learning curve    |
-| **Learning curve** | Good documentation         | May not fit all use cases  |
-| **Pricing** | Flexible         | Fixed  |
+| Feature                      | **Upstreet Agents SDK (USDK)**                                                   | **Crew.ai**                                                                                       |
+|------------------------------|----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| **Primary Focus**            | Building headless **individual AI agents** for React-based applications.        | Orchestrating **teams of AI agents** with defined roles and collaborative workflows.              |
+| **Agent Collaboration**      | Limited; primarily supports single-agent logic without inter-agent collaboration.| Focus on multi-agent systems with intelligent collaboration and task dependency management.       |
+| **Role-Based Functionality** | No explicit roles; focuses on customizable agents for app-driven tasks.         | Yes, agents are specialized with specific roles and tools (e.g., researcher, writer, analyst).    |
+| **Workflow Management**      | Workflow management is not a core feature.                                       | Provides a system for sequential/parallel task execution and dependency resolution.               |
+| **Extensibility**            | Supports extensibility within React applications but lacks multi-agent tooling. | Highly extensible with support for adding tools, roles, and APIs for agent capabilities.          |
+| **Deployment**               | Designed for localized or cloud-based deployment of individual agents.          | Designed for **production-scale multi-agent systems** with reliability and scalability.           |
+| **Programming Language**     | JavaScript/TypeScript (React-based).                                             | Primarily Python.                                                                                 |
+| **Primary Use Case**         | Single-agent implementations for business logic in modern web apps.             | Complex, collaborative problem-solving involving multiple specialized AI agents.                  |
+| **Ease of Use**              | Familiarity for web developers using React.                                      | Role-centric, team-oriented design for flexible task automation.                                  |
+| **Target Users**             | React developers building app-centric headless AI agents.                       | Developers needing complex multi-agent collaboration frameworks.                                  |
+
+## When to Use Crew.ai?
+- You need a **multi-agent system** where each agent has a specialized role and collaborates with others.
+- Your project involves **task dependencies**, workflows, and intelligent inter-agent communication.
+- You require a framework for **complex, team-based problem-solving** across specialized domains.
+- You're working on **production-scale systems** requiring scalability and reliability.
+
+## When to Use Upstreet Agents SDK (USDK)?
+- You’re building a **React-based application** that requires a single AI agent for specific business tasks.
+- Your focus is on **simplicity** and integrating AI capabilities into modern web development workflows.
+- Collaboration between agents or role-specific agents is **not required** for your use case.
+- You prefer to work in the **JavaScript/TypeScript ecosystem**. 

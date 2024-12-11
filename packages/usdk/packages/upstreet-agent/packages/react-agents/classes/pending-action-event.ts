@@ -1,12 +1,13 @@
 import type {
-  ActiveAgentObject,
   GenerativeAgentObject,
   PendingActionEventData,
   PendingActionMessage,
-  ConversationObject,
 } from '../types';
+import {
+  AbortableMessageEvent,
+} from './abortable-message-event';
 
-export class PendingActionEvent extends MessageEvent<PendingActionEventData> {
+export class PendingActionEvent extends AbortableMessageEvent<PendingActionEventData> {
   constructor({
     agent,
     message,

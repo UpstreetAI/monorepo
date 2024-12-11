@@ -10,9 +10,5 @@ type Params = {
 export default async function DesktopPage({ params }: Params) {
   const room = decodeURIComponent(params.id);
 
-  return (
-    <div className="w-full relative flex h-screen overflow-hidden">
-      <DesktopChat room={room} />
-    </div>
-  );
+  return <DesktopChat room={room} />;
 }

@@ -1,8 +1,34 @@
 ---
 title: Custom Voices
-description: You can train and use custom voice models for your Agents.
+description: You can create and use custom voice models for your Agents.
 ---
 
-<Callout>
-    This section is under construction.
-</Callout>
+The `voice` commands in `usdk` allow you to manage custom voices for your agents.
+
+### Available Commands
+
+#### 1. **List Voices**  
+- **Command**: `voice list`  
+- **Description**: Displays all voices associated with your account, including voice IDs and names. Use this information to configure the `voiceEndpoint` prop.
+
+---
+
+#### 2. **Create a Voice**  
+- **Command**: `voice create <name> <audioFile>`  
+- **Requirements**:  
+  - An audio sample of the voice to clone.  
+  - Supported formats: **MP3**, **WAV**.  
+
+- **Parameters**:  
+  - `<name>`: The desired name for your voice.  
+  - `<audioFile>`: The path to your audio sample file.  
+
+---
+
+#### 3. **Test a Voice**  
+- **Command**: `voice play <voiceName> "Your test message"`  
+- **Description**: Allows you to hear how your created voice sounds with a sample message.  
+
+---
+
+See the entire command reference for `usdk` [here](/concepts/usdk/command-reference).

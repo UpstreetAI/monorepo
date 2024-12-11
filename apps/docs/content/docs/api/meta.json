@@ -1,5 +1,5 @@
 {
     "title": "📚 react-agents docs",
-    "pages": ["overview", "components", "hooks", "generative", "context", "cognition", "integrations", "command-reference"],
+    "pages": ["overview", "components", "hooks", "generative", "context", "loops", "cognition", "integrations", "command-reference"],
     "defaultOpen": false
 }

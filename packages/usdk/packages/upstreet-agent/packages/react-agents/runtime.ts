@@ -12,29 +12,21 @@ import {
   ActionMessageEvent,
   ActionMessageEventData,
   ConversationObject,
-  TaskEventData,
+  // TaskEventData,
   ActOpts,
   DebugOptions,
   ActionStep,
+  ActionPropsAux,
+  AbortableMessageEvent,
+  PendingActionEventData,
+  PerceptionPropsAux,
 } from './types';
 import {
   PendingActionEvent,
 } from './classes/pending-action-event';
 import {
-  AbortableActionEvent,
-} from './classes/abortable-action-event';
-import {
-  ActionEvent,
-} from './classes/action-event';
-// import {
-//   retry,
-// } from './util/util.mjs';
-// import {
-//   parseCodeBlock,
-// } from './util/util.mjs';
-import {
-  PerceptionEvent,
-} from './classes/perception-event';
+  PendingUniformEvent,
+} from './classes/pending-uniform-event';
 import {
   AbortablePerceptionEvent,
 } from './classes/abortable-perception-event';
@@ -150,14 +142,8 @@ async function _generateAgentActionStepFromMessages({
     actions,
     uniforms,
   } = agent.registry;
-  // const formatter = formatters[0];
-  // if (!formatter) {
-  //   throw new Error('cannot generate action: no formatter registered');
-  // }
 
-  // resultSchema has { action, uniforms } schema
   const resultSchema = (() => {
-    // formatter.schemaFn(actions, uniforms, conversation, actOpts);
     switch (mode) {
       case 'basic':
         return formatBasicSchema({
@@ -212,7 +198,7 @@ async function _generateAgentActionStepFromMessages({
     // parse action
     if (action) {
       const { method } = action;
-      const actionHandlers = actions.filter((action) => action.name === method);
+      const actionHandlers = actions.filter((action) => action.type === method);
       if (actionHandlers.length > 0) {
         const actionHandler = actionHandlers[0];
         if (actionHandler.schema) {
@@ -239,7 +225,7 @@ async function _generateAgentActionStepFromMessages({
       };
       for (const method in uniformObject) {
         const args = uniformObject[method];
-        const uniformHandlers = uniforms.filter((uniform) => uniform.name === method);
+        const uniformHandlers = uniforms.filter((uniform) => uniform.type === method);
         if (uniformHandlers.length > 0) {
           const uniformHandler = uniformHandlers[0];
           if (uniformHandler.schema) {
@@ -278,68 +264,11 @@ async function _generateAgentActionStepFromMessages({
   }
 }
 
-/* export async function generateJsonMatchingSchema(hint: string, schema: ZodTypeAny) {
-  const numRetries = 5;
-  return await retry(async () => {
-    const prompts = [
-      dedent`
-        Respond with the following:
-      ` + '\n' + hint,
-      dedent`
-        Output the result as valid JSON matching the following schema:
-      ` + '\n' + printNode(zodToTs(schema).node) + '\n' + dedent`
-        Wrap your response in a code block e.g.
-        \`\`\`json
-        "...response goes here..."
-        \`\`\`
-      `,
-    ];
-    const promptString = prompts.join('\n\n');
-    const promptMessages = [
-      {
-        role: 'user',
-        content: promptString,
-      },
-    ];
-    const completionMessage = await (async () => {
-      const message = await this.appContextValue.complete(promptMessages);
-      return message;
-    })();
-    // extract the json string
-    const s = parseCodeBlock(completionMessage.content);
-    // parse the json
-    const rawJson = JSON.parse(s);
-    // check that the json matches the schema
-    const parsedJson = schema.parse(rawJson);
-    return parsedJson;
-  }, numRetries);
-} */
-/* export async function generateString(hint: string) {
-  const numRetries = 5;
-  return await retry(async () => {
-    const prompts = [
-      dedent`
-        Respond with the following:
-      ` + '\n' + hint,
-    ];
-    const promptString = prompts.join('\n\n');
-    const promptMessages = [
-      {
-        role: 'user',
-        content: promptString,
-      },
-    ];
-    const completionMessage = await (async () => {
-      const message = await this.appContextValue.complete(promptMessages);
-      return message;
-    })();
-    return completionMessage.content;
-  }, numRetries);
-} */
-
 interface PriorityModifier {
+  type: string;
+  conversation?: ConversationObject;
   priority?: number;
-  handler: ((e: any) => Promise<void>) | ((e: any) => void);
+  handler?: ((e: any) => Promise<void>) | ((e: any) => void);
 }
 export const collectPriorityModifiers = <T extends PriorityModifier>(modifiers: T[]) => {
   const result = new Map<number, T[]>();
@@ -354,7 +283,24 @@ export const collectPriorityModifiers = <T extends PriorityModifier>(modifiers: 
   }
   return Array.from(result.entries())
     .sort((aEntry, bEntry) => aEntry[0] - bEntry[0])
-    .map((entry) => entry[1]);
+    // .map((entry) => entry[1]);
+};
+export const filterModifiersPerConversation = <T extends PriorityModifier>(
+  modifiers: Array<[number, T[]]>, 
+  conversation: ConversationObject | null
+) => {
+  return modifiers.map(([priority, modifiersArray]) => [
+    priority,
+    modifiersArray.filter(modifier => 
+      !modifier.conversation || modifier.conversation === conversation
+    ),
+  ]) as Array<[number, T[]]>;
+};
+export const filterModifiersPerType = <T extends PriorityModifier>(modifiers: Array<[number, T[]]>, name: string) => {
+  return modifiers.map(([priority, modifiersArray]) => [
+    priority,
+    modifiersArray.filter((modifier) => modifier.type === '*' || modifier.type === name),
+  ]) as Array<[number, T[]]>;
 };
 
 export async function executeAgentActionStep(
@@ -368,89 +314,110 @@ export async function executeAgentActionStep(
   const {
     actions,
     actionModifiers,
+    uniforms,
   } = agent.registry;
   const {
     action: message,
     uniforms: uniformsArgs,
   } = step;
 
-  let aborted = false;
-
+  let actionsPerPriority: Array<[number, ActionPropsAux[]]> = [
+    [0, actions],
+  ];
+  actionsPerPriority = filterModifiersPerConversation(actionsPerPriority, conversation);
+  let actionModifiersPerPriority = collectPriorityModifiers(actionModifiers);
+  actionModifiersPerPriority = filterModifiersPerConversation(actionModifiersPerPriority, conversation);
+  let uniformsPerPriority = collectPriorityModifiers(uniforms);
+  uniformsPerPriority = filterModifiersPerConversation(uniformsPerPriority, conversation);
   if (message) {
-    // collect action modifiers
-    const actionModifiersPerPriority = collectPriorityModifiers(actionModifiers)
-      .map((actionModifiers) =>
-        actionModifiers.filter((actionModifier) =>
-          !actionModifier.conversation || actionModifier.conversation === conversation
-        )
-      )
-      .filter((actionModifiers) => actionModifiers.length > 0);
-    // for each priority, run the action modifiers, checking for abort at each step
-    for (const actionModifiers of actionModifiersPerPriority) {
-      const abortableEventPromises = actionModifiers.filter(actionModifier => {
-        return actionModifier.name === message.method;
-      }).map(async (actionModifier) => {
-        const e = new AbortableActionEvent({
-          agent: generativeAgent,
-          message,
-        });
-        await actionModifier.handler(e);
-        return e;
-      });
-      const messageEvents = await Promise.all(abortableEventPromises);
-      aborted = messageEvents.some((messageEvent) => messageEvent.abortController.signal.aborted);
-      if (aborted) {
-        break;
-      }
-    }
-
-    if (!aborted) {
-      const actionPromises: Promise<void>[] = [];
-      for (const action of actions) {
-        if (
-          action.name === message.method &&
-          (!action.conversation || action.conversation === conversation)
-        ) {
-          const e = new PendingActionEvent({
-            agent: generativeAgent,
-            message,
-          });
-          const handler =
-            (action.handler as (e: PendingActionEvent) => Promise<void>) ??
-            (async (e: PendingActionEvent) => {
-              await e.commit();
-            });
-          const p = handler(e);
-          actionPromises.push(p);
-        }
-      }
-      await Promise.all(actionPromises);
-    }
+    actionsPerPriority = filterModifiersPerType(actionsPerPriority, message.method);
+    actionModifiersPerPriority = filterModifiersPerType(actionModifiersPerPriority, message.method);
+    uniformsPerPriority = filterModifiersPerType(uniformsPerPriority, message.method);
   }
 
-  if (!aborted && uniformsArgs) {
-    const uniformPromises: Promise<void>[] = [];
-    for (const method in uniformsArgs) {
-      const args = uniformsArgs[method];
-      const uniforms = agent.registry.uniforms.filter((uniform) => uniform.name === method);
-      if (uniforms.length > 0) {
-        const uniform = uniforms[0];
-        if (uniform.handler) {
-          const e = new ActionEvent({
-            agent: generativeAgent,
-            message: {
-              method,
-              args,
-            },
-          });
-          const p = (async () => {
-            await uniform.handler(e);
-          })();
-          uniformPromises.push(p);
+  const mergePriorityHandlers = (handlersPerPriority: Array<[number, Array<() => Promise<AbortableMessageEvent<PendingActionEventData>>>]>) => {
+    const resultsMap = new Map<number, Array<() => Promise<AbortableMessageEvent<PendingActionEventData>>>>();
+    for (const [priority, handlers] of handlersPerPriority) {
+      let handlersPerPriority = resultsMap.get(priority);
+      if (!handlersPerPriority) {
+        handlersPerPriority = [];
+        resultsMap.set(priority, handlersPerPriority);
+      }
+      handlersPerPriority.push(...handlers);
+    }
+    // return the sorted results [priority, handlers]
+    const entries = Array.from(resultsMap.entries());
+    const sorted = entries.sort((a, b) => a[0] - b[0]);
+    return sorted;
+  };
+  const makeActionHandler = (modifier: PriorityModifier) => {
+    return async () => {
+      const e = new PendingActionEvent({
+        agent: generativeAgent,
+        message,
+      });
+      if (message) {
+        await modifier.handler(e);
+      }
+      return e;
+    };
+  };
+  const makeUniformHandler = (modifier: PriorityModifier) => {
+    return async () => {
+      if (uniformsArgs) {
+        for (const method in uniformsArgs) {
+          if (modifier.type === method) {
+            const args = uniformsArgs[method];
+            const e = new PendingUniformEvent({
+              agent: generativeAgent,
+              message: {
+                method,
+                args,
+              },
+            });
+            await modifier.handler(e);
+            return e;
+          }
         }
       }
+    };
+  };
+  const actionsHandlers : [
+    number,
+    Array<() => Promise<AbortableMessageEvent<PendingActionEventData>>>
+  ][] = actionsPerPriority.map(([priority, actions]) => [
+    priority,
+    actions.map(makeActionHandler),
+  ]);
+  const actionModifiersHandlers : [
+    number,
+    Array<() => Promise<AbortableMessageEvent<PendingActionEventData>>>
+  ][] = actionModifiersPerPriority.map(([priority, modifiers]) => [
+    priority,
+    modifiers.map(makeActionHandler),
+  ]);
+  const uniformsHandlers : [
+    number,
+    Array<() => Promise<AbortableMessageEvent<PendingActionEventData>>>
+  ][] = uniformsPerPriority.map(([priority, uniforms]) => [
+    priority,
+    uniforms.map(makeUniformHandler),
+  ]);
+  const handlersPerPriority = mergePriorityHandlers([
+    ...actionsHandlers,
+    ...actionModifiersHandlers,
+    ...uniformsHandlers,
+  ]);
+
+  // for each priority, run the modifiers, checking for abort at each step
+  let aborted = false;
+  for (const [priority, handlers] of handlersPerPriority) {
+    const promises = handlers.map((handler) => handler());
+    const messageEvents = await Promise.all(promises);
+    aborted = aborted || messageEvents.some((messageEvent) => messageEvent.abortController.signal.aborted);
+    if (aborted) {
+      break;
     }
-    await Promise.all(uniformPromises);
   }
 }
 
@@ -470,17 +437,15 @@ const handleChatPerception = async (data: ActionMessageEventData, {
 
   const {
     perceptions,
-    perceptionModifiers,
   } = agent.registry;
 
-  // collect perception modifiers
-  const perceptionModifiersPerPriority = collectPriorityModifiers(perceptionModifiers);
-  // for each priority, run the perception modifiers, checking for abort at each step
+  let perceptionsPerPriority = collectPriorityModifiers(perceptions);
+  perceptionsPerPriority = filterModifiersPerConversation(perceptionsPerPriority, conversation);
+  perceptionsPerPriority = filterModifiersPerType(perceptionsPerPriority, message.method);
   let aborted = false;
-  for (const perceptionModifiers of perceptionModifiersPerPriority) {
-    const abortableEventPromises = perceptionModifiers.filter(perceptionModifier => {
-      return perceptionModifier.type === message.method;
-    }).map(async (perceptionModifier) => {
+  for (const [priority, perceptionsBlock] of perceptionsPerPriority) {
+    const blockPromises = [];
+    for (const perception of perceptionsBlock) {
       const targetAgent = agent.generative({
         conversation,
       });
@@ -489,43 +454,20 @@ const handleChatPerception = async (data: ActionMessageEventData, {
         sourceAgent,
         message,
       });
-      await perceptionModifier.handler(e);
-      return e;
-    });
-    const messageEvents = await Promise.all(abortableEventPromises);
+      const p = (async () => {
+        await perception.handler(e);
+        return e;
+      })();
+      blockPromises.push(p);
+    }
+    const messageEvents = await Promise.all(blockPromises);
     aborted = aborted || messageEvents.some((messageEvent) => messageEvent.abortController.signal.aborted);
     if (aborted) {
       break;
     }
   }
 
-  // if no aborts, run the perceptions
-  const perceptionPromises = [];
-  if (!aborted) {
-    for (const perception of perceptions) {
-      if (perception.type === message.method) {
-        const targetAgent = agent.generative({
-          conversation,
-        });
-        const e = new PerceptionEvent({
-          targetAgent,
-          sourceAgent,
-          message,
-        });
-        const p = perception.handler(e);
-        perceptionPromises.push(p);
-        // perceptionPromises.push((async () => {
-        //   await perception.handler(e);
-        //   const steps = Array.from(targetAgent.thinkCache.values());
-        //   return steps;
-        // })());
-      }
-    }
-  }
-  const perceptionSteps = await Promise.all(perceptionPromises);
-  const steps = perceptionSteps.flat();
   return {
-    steps,
     aborted,
   };
 };
@@ -543,7 +485,6 @@ export const bindConversationToAgent = ({
       try {
         // handle the perception
         const {
-          steps,
           aborted,
         } = await handleChatPerception(e.data, {
           agent,
@@ -566,7 +507,6 @@ export const bindConversationToAgent = ({
             });
           })();
         }
-        e.setResult(steps);
       } catch (err) {
         console.warn('caught new message error', err);
       }

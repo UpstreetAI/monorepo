@@ -137,7 +137,7 @@ export function Chat({ className, /* user, missingKeys, */ room, desktop, onConn
 
           <div className='h-screen overflow-auto' ref={scrollRef}>
             <div
-              className={cn('pb-[200px] pt-20 md:pt-24', className)}
+              className={cn('pb-[80px] pt-20 md:pt-24', className)}
               ref={messagesRef}
             >
               <div className="relative mx-auto max-w-2xl px-4">

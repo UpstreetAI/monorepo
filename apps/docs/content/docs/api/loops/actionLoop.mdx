@@ -1,0 +1,37 @@
+---
+title: <ActionLoop>
+description: Autonomously execute actions.
+---
+
+## Import
+```tsx
+import { ActionLoop } from 'react-agents';
+```
+
+## Usage
+
+Add the component to your agent to initiate an action loop:
+
+```tsx
+function MyAgent() {
+  return (
+    <Agent>
+      <ActionLoop
+        hint="Optional hint to guide the agent's actions"
+        actOpts={{ /* Optional action options */ }}
+        evaluator={customEvaluator} // Optional: Provide a custom evaluator
+      >
+        {/* Child components */}
+      </ActionLoop>
+    </Agent>
+  );
+}
+```
+
+The agent will continue to loop and execute actions until the component is removed.
+
+## Props
+
+- `hint?: string` - Optional hint to guide the agent's actions
+- `actOpts?: object` - Optional configuration for action behavior
+- `evaluator?: Evaluator` - Optional custom evaluator (cannot be used with hint/actOpts)

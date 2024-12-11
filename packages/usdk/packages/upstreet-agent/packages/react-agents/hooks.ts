@@ -45,7 +45,7 @@ import {
 
 // get the .env.txt content (parsed as an object)
 // note: this contains keys and must not be exposed to the user (such as by including it in prompts)
-export const useEnv: () => string = () => {
+export const useEnv: () => object = () => {
   const appContextValue = useContext(AppContext);
   return appContextValue.useEnv();
 };
@@ -68,7 +68,7 @@ export const useInit: () => any = () => {
   return appContextValue.useInit();
 };
 // get the passed-down agent debug flag
-export const useDebug: () => boolean = () => {
+export const useDebug: () => number = () => {
   const appContextValue = useContext(AppContext);
   return appContextValue.useDebug();
 };
@@ -136,21 +136,22 @@ export const useCachedMessages = (opts?: ActionHistoryQuery) => {
     });
   }, [conversation]);
 
-  // listen for messasge cache updates
-  const update = (e: ExtendableMessageEvent<MessageCacheUpdateArgs>) => {
-    setCachedMessagesEpoch(cachedMessagesEpoch => cachedMessagesEpoch + 1);
-
-    // wait for re-render before returning from the handler
-    e.waitUntil((async () => {
-      const renderRegistry = agent.appContextValue.useRegistry();
-      await renderRegistry.waitForUpdate();
-    })());
-  };
   useEffect(() => {
-    conversation.messageCache.addEventListener('update', update);
-    return () => {
-      conversation.messageCache.removeEventListener('update', update);
-    };
+    if (conversation) {
+      const update = (e: ExtendableMessageEvent<MessageCacheUpdateArgs>) => {
+        setCachedMessagesEpoch(cachedMessagesEpoch => cachedMessagesEpoch + 1);
+    
+        // wait for re-render before returning from the handler
+        e.waitUntil((async () => {
+          const renderRegistry = agent.appContextValue.useRegistry();
+          await renderRegistry.waitForUpdate();
+        })());
+      };
+      conversation.messageCache.addEventListener('update', update);
+      return () => {
+        conversation.messageCache.removeEventListener('update', update);
+      };
+    }
   }, [conversation]);
 
   const messages = conversation.getCachedMessages(opts?.filter);

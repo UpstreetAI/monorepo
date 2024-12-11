@@ -118,7 +118,7 @@ export class AgentRegistry {
       const conversationActionExists = Array.from(this.actionsMap.values())
         .some((a) => {
           if (a) {
-            return a.name === action.name && a.conversation === action.conversation;
+            return a.type === action.type && a.conversation === action.conversation;
           } else {
             return false;
           }
@@ -178,12 +178,6 @@ export class AgentRegistry {
   }
   unregisterDefer(key: symbol) {
     this.deferMap.set(key, null);
-  }
-  registerTask(key: symbol, task: TaskProps) {
-    this.tasksMap.set(key, task);
-  }
-  unregisterTask(key: symbol) {
-    this.tasksMap.set(key, null);
   }
   registerName(key: symbol, name: NameProps) {
     this.namesMap.set(key, name);

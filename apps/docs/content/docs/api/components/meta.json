@@ -1,4 +1,4 @@
 {
     "title": "Components",
-    "pages": ["agent", "prompt", "conversation", "action", "action-modifier", "perception", "perception-modifier", "uniform"]
+    "pages": ["agent", "prompt", "action", "action-modifier", "perception", "uniform"]
 }

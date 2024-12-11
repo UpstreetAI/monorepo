@@ -7,8 +7,14 @@ export const headers = {
 export const defaultModels = [
   'openai:gpt-4o-2024-08-06',
   'anthropic:claude-3-5-sonnet-20240620',
-  'lambdalabs:hermes-3-llama-3.1-405b-fp8',
-  // 'lambdalabs:hermes-3-llama-3.1-405b-fp8-128k',
+  'openrouter:nousresearch/hermes-3-llama-3.1-405b',
+  'openrouter:nousresearch/hermes-3-llama-3.1-70b',
+];
+export const defaultSmallModels = [
+  'openai:gpt-4o-mini',
+];
+export const defaultLargeModels = [
+  'openai:o1-preview',
 ];
 
 export const defaultVisionModels = [

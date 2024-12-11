@@ -18,15 +18,30 @@ import { RAGMemory } from 'react-agents';
 
 ## Usage
 
-1. Add the component to your agent:
-   ```json
-   import { RAGMemory } from 'react-agents';
+Add the component to your agent:
+```tsx
+import { RAGMemory } from 'react-agents';
 
-   return (
-     <Agent>
-       {/* ... */}
-       <RAGMemory />
-       {/* ... */}
-     </Agent>
-   );
-   ```
+return (
+  <Agent>
+    {/* ... */}
+    <RAGMemory
+      chunkMessages={5} // Optional: Number of messages to chunk together when creating memories
+    />
+    {/* ... */}
+  </Agent>
+);
+```
+
+**Additional Notes:**
+- The `chunkMessages` prop is optional and controls how many messages are grouped together when creating new memories
+- If not specified, a default chunk size will be used
+- The agent will:
+  - Automatically create memories from conversation chunks
+  - Summarize chunks of messages into memorable information
+  - Store memories for later recall
+  - Load relevant memories during conversations
+  - Use memories to maintain context across sessions
+- Memories persist across conversations and agent restarts
+- Memories are stored in a vector database for efficient semantic search
+- The agent can access memories that are semantically relevant to the current conversation

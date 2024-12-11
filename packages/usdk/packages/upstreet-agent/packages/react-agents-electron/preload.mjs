@@ -1,5 +1,12 @@
-import { contextBridge, ipcRenderer } from 'electron';
+const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('app', {
-  ipcRenderer: ipcRenderer
+// console.log('Preload script is running');
+
+contextBridge.exposeInMainWorld('electron', {
+  send: (channel, data) => {
+    const validChannels = ['app:quit'];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.send(channel, data);
+    }
+  }
 });

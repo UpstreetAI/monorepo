@@ -129,7 +129,8 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "jest": "^29.0.0"
   },
   "overrides": {
     "@supabase/auth-js": "2.62.0",

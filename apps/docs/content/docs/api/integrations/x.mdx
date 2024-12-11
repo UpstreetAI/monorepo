@@ -11,14 +11,26 @@ Twitter integration allows your agent to interact with Twitter by responding to 
 1. Create a Twitter Developer Account:
    - Go to https://developer.twitter.com/
    - Sign up for a developer account if you haven't already
-   - Create a new project and app
-   - Make sure your "User authentication settings" are set to "Native app" (Public client)
+   - Create a new project and application
+
+2. Configure your application:
+   - Navigate to the "Settings" tab of your application
+   - Under the "User authentication settings" section, press the "Edit" button
+   - In the "App Permissions" section, select the appropriate option having "write" access
+   - In the "Type of App" section, you must select the "Native app" (Public client) option
+   - In the "App Info" section:
+     - Set the "Callback URI / Redirect URL" field value to "https://twitter-oauth.upstreet.ai"
+     - Set the "Website" field value to your preferred URL
+   - Once completed, save your changes by clicking the "Save" button
+   - Navigate to the "Keys and tokens" section
    - Copy your OAuth 2.0 application credentials (Client ID and Client Secret)
 
-2. Log in with oauth at https://twitter-auth.upstreet.ai/
-   - Use the Client ID and Client Secret from step 1
+3. Log in with oauth at https://twitter-auth.upstreet.ai/
+   - Use the Client ID and Client Secret from step 2
+   - On successful authentication, you will be provided with your Twitter Token
+   - Copy the token and use it in the next step
 
-3. Configure your agent:
+4. Configure your agent:
    - Add the following component to your agent:
    ```json
    import { Twitter } from 'react-agents';
@@ -27,7 +39,7 @@ Twitter integration allows your agent to interact with Twitter by responding to 
      <Agent>
        {/* ... */}
        <Twitter
-         token="YOUR_TWITTER_TOKEN" // OAuth 2.0 token
+         token="YOUR_TWITTER_TOKEN" // Paste your Twitter Token from Step 3. here
        />
        {/* ... */}
      </Agent>

@@ -2,10 +2,10 @@ import React from 'react'
 
 import '@/app/globals.css'
 import { cn } from '@/lib/utils'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
+// import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Toaster } from '@/components/ui/sonner'
-import { Body } from '@/components/body'
+import { MainWrap } from '@/components/main-wrap'
 
 export const metadata = {
   title: {
@@ -45,17 +45,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
       </head>
-    <body>
-        <Toaster position="top-center" />
+      <body>
         <Providers
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Body>
+          <Toaster position="top-center" />
+          <MainWrap>
             {children}
-          </Body>
+          </MainWrap>
           {/* <TailwindIndicator/> */}
         </Providers>
       </body>

@@ -119,4 +119,10 @@ Editing the `usdk` package will now automatically update your locally-installed 
 ![Turborepo](https://img.shields.io/badge/Turborepo-%230F0813.svg?style=for-the-badge&logo=Turborepo&logoColor=white)
 
 ... And many more closed source and open-source projects.
+
+### Contributors
+<a href="https://github.com/upstreetAI/upstreet-core/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=upstreetAI/upstreet-core" />
+</a>
+
 </div>

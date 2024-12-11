@@ -9,10 +9,12 @@ import { WebSocket } from 'ws';
 import * as debugLevels from '../react-agents/util/debug-levels.mjs';
 import { Button, Key, keyboard, mouse, Point } from '@nut-tree-fork/nut-js';
 import { fileURLToPath } from 'url';
-
+import { updateIgnoreMouseEvents } from './lib/updateIgnoreMouseEvents.js';
 //
 
 console.log('electron start script!');
+
+const UPDATE_INTERVAL = 1000 / 60;
 
 ['uncaughtException', 'unhandledRejection'].forEach(event => {
   process.on(event, err => {
@@ -168,7 +170,7 @@ const makeViteServer = (directory) => {
 // const host = 'https://chat.upstreet.ai';
 const host = 'http://127.0.0.1:3000';
 
-const createOTP = async (jwt) => {
+/* const createOTP = async (jwt) => {
   const res = await fetch(
     `https://ai.upstreet.ai/api/register-otp?token=${jwt}`,
     {
@@ -181,7 +183,7 @@ const createOTP = async (jwt) => {
   } else {
     throw new Error('Failed to create a one-time password.');
   }
-};
+}; */
 
 // Convert import.meta.url to a file path
 const __filename = fileURLToPath(import.meta.url);
@@ -216,14 +218,14 @@ const openFrontend = async ({
     }
 
     // trade the jwt for an otp auth token
-    const authToken = await createOTP(jwt);
+    // const authToken = await createOTP(jwt);
     // construct the destination url
     const dstUrl = new URL(`${host}/desktop/${room}`);
     dstUrl.searchParams.set('desktop', 1 + '');
-    // construct the final url
-    const u = new URL(`${host}/login`);
-    u.searchParams.set('auth_token', authToken);
-    u.searchParams.set('referrer_url', dstUrl.href);
+    // // construct the final url
+    // const u = new URL(`${host}/login`);
+    // u.searchParams.set('auth_token', authToken);
+    // u.searchParams.set('referrer_url', dstUrl.href);
 
     // main window
     const win = new BrowserWindow({
@@ -234,7 +236,6 @@ const openFrontend = async ({
       transparent: true,
       backgroundColor: '#00000000',
       frame: false,
-      hasShadow: false,
       alwaysOnTop: true,
       resizable: false,
       titleBarStyle: 'none',
@@ -243,12 +244,31 @@ const openFrontend = async ({
         session: session.fromPartition('login'),
         // nodeIntegration: true,
         preload: path.join(__dirname, 'preload.mjs'),
+        contextIsolation: true,
+        enableRemoteModule: false,
       },
+
+      // macOS
+      acceptFirstMouse: true,
+      hasShadow: false,
     });
     if (debug >= debugLevels.SILLY) {
       win.webContents.openDevTools();
     }
-    win.loadURL(u.href);
+
+    // set the cookie on the page
+    await win.webContents.session.cookies.set({
+      url: host,
+      name: 'auth-jwt',
+      value: jwt,
+    });
+
+    setInterval(() => {
+      // Allow mouse events to pass through the window.
+      updateIgnoreMouseEvents( win )
+    }, UPDATE_INTERVAL )
+
+    await win.loadURL(dstUrl.href);
   }
 };
 

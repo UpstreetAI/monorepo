@@ -6,6 +6,7 @@ export type Message = CoreMessage & {
 
 export interface GlobalState {
   isDevMode: boolean;
+  mode: any | null;
 }
 
 export interface Chat extends Record<string, any> {

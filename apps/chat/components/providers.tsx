@@ -16,9 +16,9 @@ import { LoadingProvider } from '@/lib/client/hooks/use-loading'
 export function Providers({ children, ...props }: ThemeProviderProps) {
   return (
     <GlobalStateProvider>
-      <NextThemesProvider {...props}>
-        <LoadingProvider>
-          <SupabaseProvider>
+      <SupabaseProvider>
+        <NextThemesProvider {...props}>
+          <LoadingProvider>
             <SidebarProvider>
               <TooltipProvider>
                 <ActionsProvider>
@@ -30,9 +30,9 @@ export function Providers({ children, ...props }: ThemeProviderProps) {
                 </ActionsProvider>
               </TooltipProvider>
             </SidebarProvider>
-          </SupabaseProvider>
-        </LoadingProvider>
-      </NextThemesProvider>
+          </LoadingProvider>
+        </NextThemesProvider>
+      </SupabaseProvider>
     </GlobalStateProvider>
   );
 }

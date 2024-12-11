@@ -1,4 +1,5 @@
 {
   "name": "react-agents-electron",
-  "main": "electron-runtime.mjs"
+  "main": "electron-runtime.mjs",
+  "type": "module"
 }

@@ -51,6 +51,7 @@ export function ChatPanel({
               setInput={setInput}
               desktop={desktop}
               mode={mode}
+              scrollToBottom={scrollToBottom}
             />
           </div>
           <DirectMessages />

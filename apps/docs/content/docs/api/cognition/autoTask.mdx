@@ -14,4 +14,33 @@ import { AutoTask } from 'react-agents';
 
 ## AutoTask
 
-TBD
+The AutoTask component enables your agent to plan and execute tasks by breaking them down into steps.
+
+## Usage
+
+1. Add the component to your agent:
+   ```tsx
+   import { AutoTask } from 'react-agents';
+
+   return (
+     <Agent>
+       {/* ... */}
+       <AutoTask
+         hint="Optional guidance for the agent's task planning behavior"
+       />
+       {/* ... */}
+     </Agent>
+   );
+   ```
+
+   **Additional Notes:**
+   - The `hint` prop is optional and can be used to guide how the agent plans and executes tasks
+   - For example, you could set `hint="Break tasks into very small steps"` or `hint="Focus on security best practices"`
+   - If no hint is provided, the agent will plan tasks based on its own judgment
+   - The agent can:
+     - Create new tasks with goals and steps
+     - Track progress through task steps
+     - Update task details as work progresses
+     - Complete or abandon tasks
+   - Tasks are managed in memory and persist only during the agent's session
+   - Persistence may be added in the future

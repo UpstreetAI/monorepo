@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-// import Link from 'next/link';
 import { getJWT } from '@/lib/jwt';
 // import { ProfileImage } from '@/components/account/profile-image';
 import { Button } from '@/components/ui/button';

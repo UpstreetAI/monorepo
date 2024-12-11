@@ -7,6 +7,7 @@ import { GlobalState } from '@/lib/types';
 
 const initialGlobalState: GlobalState = {
     isDevMode: env.NEXT_PUBLIC_ENVIRONMENT === 'development' ? true : false,
+    mode: null, // Ex: { name: 'desktop', mainBackgroundClass: '' }
 };
 
 const useGlobalStateInternal = () => useState<GlobalState>(initialGlobalState);

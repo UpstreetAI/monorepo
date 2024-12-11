@@ -229,9 +229,9 @@ export class ActiveAgentObject extends AgentObject {
       });
     const { error: error2, data: data2 } = writeResult;
     if (!error2) {
-      console.log('app context value recall 3', {
-        data2,
-      });
+      // console.log('app context value recall 3', {
+      //   data2,
+      // });
       return data2 as Memory;
     } else {
       throw new Error(error2);

@@ -2,7 +2,7 @@ import type { ZodTypeAny } from 'zod';
 import type {
   ActionMessage,
   ChatMessages,
-  SubtleAiImageOpts,
+  SubtleAiCompleteOpts,
   PendingActionMessage,
   ReadableAudioStream,
   PlayableAudioStream,
@@ -66,17 +66,21 @@ export class GenerativeAgentObject {
   }
   async complete(
     messages: ChatMessages,
+    opts?: SubtleAiCompleteOpts,
   ) {
+    const model = opts?.model ?? this.agent.model;
     return await this.agent.appContextValue.complete(messages, {
-      model: this.agent.model,
+      model,
     });
   }
   async completeJson(
     messages: ChatMessages,
     format: ZodTypeAny,
+    opts?: SubtleAiCompleteOpts,
   ) {
+    const model = opts?.model ?? this.agent.model;
     return await this.agent.appContextValue.completeJson(messages, format, {
-      model: this.agent.model,
+      model,
     });
   }
   // async generateImage(prompt: string, opts?: SubtleAiImageOpts) {

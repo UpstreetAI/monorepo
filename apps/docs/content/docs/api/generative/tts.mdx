@@ -33,38 +33,32 @@ The TTS component adds text-to-speech capabilities to your agent, allowing it to
    ```
    Or, simply chat with the agent to get them to speak.
 
-### Props
+## Props
 
-- **voiceEndpoint** (string, optional)
-  - Endpoint for the text-to-speech
-  - Format is `provider:voiceName:voiceId`
-  - If not provided, will use a default voice
+import { TypeTable } from 'fumadocs-ui/components/type-table';
 
-# Custom voices
+<TypeTable
+  type={{
+    voiceEndpoint: {
+      description: (
+        <>
+          Endpoint for the text-to-speech. Format is{" "}
+          <code>provider:voiceName:voiceId</code>. If not provided, it will use
+          a default voice.
+        </>
+      ),
+      type: 'string',
+      default: 'null (uses default voice)',
+    },
+  }}
+/>
 
-You can create and use custom voices with the USDK CLI. The voice commands allow you to manage custom voices for your agents.
 
-### Available Commands
+## Custom voices
 
-1. **List voices**
-   - Command: `voice list`
-   - Shows all voices associated with your account
-   - Displays voice IDs and names for use in voiceEndpoint prop
+You can create and use custom voices with the USDK CLI. Learn how to do that [here]().
 
-2. **Create a voice**
-   - Command: `voice create <name> <audioFile>`
-   - Requirements:
-     - Audio sample of the voice to clone
-     - Supported formats: MP3, WAV
-   - Parameters:
-     - `<name>`: Desired name for your voice
-     - `<audioFile>`: Path to your audio sample
-
-3. **Test a voice**
-   - Command: `voice play <voiceName> "Your test message"`
-   - Lets you hear how your created voice sounds
-
-### Using Custom Voices
+### Using Custom Voices with `<TTS>`
 
 Once created, use your custom voice in the TTS component by setting the voiceEndpoint prop:
 
