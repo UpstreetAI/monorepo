@@ -149,11 +149,18 @@ export class DiscordBot extends EventTarget {
     this.abortController = new AbortController();
     const { signal } = this.abortController;
 
+    const {
+      name,
+      previewUrl,
+    } = agent;
+
     // initialize discord bot client
     const discordBotClient = new DiscordBotClient({
       token,
       codecs,
       jwt,
+      name,
+      previewUrl,
     });
     // bind discord bot client
     signal.addEventListener('abort', () => {
