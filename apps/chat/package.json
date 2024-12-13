@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Web-based chat application for Upstreet",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
