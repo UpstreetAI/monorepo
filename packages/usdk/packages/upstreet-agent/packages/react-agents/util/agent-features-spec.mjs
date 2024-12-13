@@ -141,12 +141,11 @@ export const featureSpecs = [
     `,
     schema: z.union([
       z.object({
-        token: z.string(),
         channels: z.array(z.string()),
       }),
       z.null(),
     ]),
-    examples: [{ token: 'YOUR_DISCORD_BOT_TOKEN', channels: ['general', 'voice'], }],
+    examples: [{ channels: ['general', 'voice'], }],
     // imports: (discord) => {
     //   if (discord.token) {
     //     return ['Discord'];

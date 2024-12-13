@@ -120,7 +120,6 @@ export type TtsArgs = {
 export type DiscordRoomSpec = RegExp | string;
 export type DiscordRoomSpecs = DiscordRoomSpec | DiscordRoomSpec[];
 export type DiscordProps = {
-  token: string;
   channels?: DiscordRoomSpecs;
   dms?: DiscordRoomSpecs;
   userWhitelist?: string[];
