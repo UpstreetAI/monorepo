@@ -31,6 +31,8 @@
 [![Tutorial Video](./screenshots/video-thumbnail.png)](https://www.youtube.com/watch?v=Fr78GhpaYB4&t=2s)
 
 ## In this repo...
+> This repository follows a monorepo structure with multiple applications and packages managed by pnpm workspaces.
+
 ### Chat App:
 - 🌐 Link: https://upstreet.ai
 - 📁 Directory: [/apps/chat](https://github.com/UpstreetAI/upstreet-core/tree/main/apps/chat)
