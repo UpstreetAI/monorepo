@@ -1,4 +1,4 @@
-import { versionManager } from "../classes/version-manager.mjs";
+import { versionManager } from "../lib/version-manager.mjs";
 
 /**
  * Get the current version
