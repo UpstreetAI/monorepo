@@ -1,10 +1,9 @@
 import dotenv from 'dotenv';
 import { AgentMain } from 'react-agents/entry.ts';
-import userRender from '../../agent.tsx'; // note: this will be overwritten by the build process
-import envTxt from '../../.env.txt';
-// import configTxt from '../../config.txt';
-import agentJsonTxt from '../../agent.json';
 import * as codecs from 'codecs/ws-codec-runtime-edge.mjs';
+import userRender from './agent.tsx';
+import agentJson from './agent.json';
+import envTxt from './.env.txt';
 
 Error.stackTraceLimit = 300;
 
@@ -16,9 +15,15 @@ export class DurableObject {
   constructor(state: any, env: any) {
     const config = (() => {
       try {
-        return JSON.parse(agentJsonTxt);
+        if (typeof agentJson === 'string') {
+          return JSON.parse(agentJson);
+        } else if (typeof agentJson === 'object') {
+          return agentJson;
+        } else {
+          throw new Error(`Invalid agent.json: ${agentJson}`);
+        }
       } catch (e) {
-        console.warn('Warning: failed to parse config.txt:', e);
+        console.warn(`Warning: failed to parse ${agentJson}:`, e);
         return {};
       }
     })();

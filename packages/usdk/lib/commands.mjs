@@ -22,9 +22,6 @@ export {
   deploy,
 } from './deploy.mjs';
 export {
-  update,
-} from './update.mjs';
-export {
   authenticate,
 } from './authenticate.mjs';
 export {

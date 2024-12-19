@@ -1,9 +1,24 @@
+import path from 'path';
+import fs from 'fs';
 import crossSpawn from 'cross-spawn';
+import { mkdirp } from 'mkdirp';
+import { rimraf } from 'rimraf';
+// import toml from '@iarna/toml';
 import { wranglerBinPath } from './util/locations.mjs';
 import { devServerPort } from './util/ports.mjs';
+import { getCurrentDirname } from '../react-agents/util/path-util.mjs';
+// import { recursiveCopyAll } from '../../../../util/copy-utils.mjs';
+import { installAgent } from '../react-agents-node/install-agent.mjs';
 
 //
 
+const dirname = getCurrentDirname(import.meta, process);
+const copyWithStringTransform = async (src, dst, transformFn = (s) => s) => {
+  let s = await fs.promises.readFile(src, 'utf8');
+  s = transformFn(s);
+  await mkdirp(path.dirname(dst));
+  await fs.promises.writeFile(dst, s);
+};
 process.addListener('SIGTERM', () => {
   process.exit(0);
 });
@@ -84,8 +99,19 @@ const waitForProcessIo = async (cp, matcher, timeout = 60 * 1000) => {
 
 //
 
+const buildWranglerToml = (
+  t,
+  opts = {},
+) => {
+  for (const k in opts) {
+    t[k] = opts[k];
+  }
+  return t;
+};
+
 export class ReactAgentsWranglerRuntime {
   agentSpec;
+  dstDir = null;
   cp = null;
   constructor(agentSpec) {
     this.agentSpec = agentSpec;
@@ -99,11 +125,18 @@ export class ReactAgentsWranglerRuntime {
       portIndex,
     } = this.agentSpec;
 
+    const {
+      agentPath: dstDir,
+      wranglerTomlPath,
+      cleanup: cleanupInstall,
+    } = await installAgent(directory);
+
     // spawn the wrangler child process
     const cp = crossSpawn(
       wranglerBinPath,
       [
         'dev',
+        '-c', wranglerTomlPath,
         '--var', 'WORKER_ENV:development',
         '--ip', '0.0.0.0',
         '--port', devServerPort + portIndex,
@@ -115,10 +148,12 @@ export class ReactAgentsWranglerRuntime {
       ]: []),
       {
         stdio: 'pipe',
-        // stdio: 'inherit',
-        cwd: directory,
+        cwd: dstDir,
       },
     );
+    cp.on('exit', (code) => {
+      cleanupInstall();
+    });
     bindProcess(cp);
     await waitForProcessIo(cp, /ready on /i);
     if (debug) {
@@ -156,5 +191,8 @@ export class ReactAgentsWranglerRuntime {
         }
       }
     });
+
+    // clean up the temporary directory
+    await rimraf(this.dstDir);
   }
 }

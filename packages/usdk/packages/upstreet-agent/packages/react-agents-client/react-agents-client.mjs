@@ -20,34 +20,40 @@ export class ReactAgentsClient {
   async join(room, {
     only = false,
   } = {}) {
-    const u = `${this.url}/join`;
-    try {
-      const opts = {
-        room,
-        only,
-      };
-      // console.log('join opts', opts);
-      const joinReq = await fetch(u, {
-        method: 'POST',
-        body: JSON.stringify(opts),
-      });
-      if (joinReq.ok) {
-        const joinJson = await joinReq.json();
-        // console.log('join json', joinJson);
-      } else if (joinReq.status === 404) {
-        throw new Error('agent not found');
-      } else {
-        const text = await joinReq.text();
-        throw new Error(
-          'failed to join, status code: ' + joinReq.status + ': ' + text,
-        );
+    const numRetries = 3;
+    for (let i = 0; i < numRetries; i++) {
+      const u = `${this.url}/join`;
+      try {
+        const opts = {
+          room,
+          only,
+        };
+        // console.log('join opts', opts);
+        const joinReq = await fetch(u, {
+          method: 'POST',
+          body: JSON.stringify(opts),
+        });
+        if (joinReq.ok) {
+          const joinJson = await joinReq.json();
+          // console.log('join json', joinJson);
+          return;
+        } else if (joinReq.status === 503) { // service unavailable
+          continue;
+        } else if (joinReq.status === 404) { // not found
+          throw new Error('agent not found');
+        } else {
+          const text = await joinReq.text();
+          throw new Error(
+            'failed to join, status code: ' + joinReq.status + ': ' + text,
+          );
+        }
+      } catch (err) {
+        console.warn('join fetch failed', err);
+        await new Promise((accept, reject) => {
+          setTimeout(accept, 10000000);
+        });
+        throw err;
       }
-    } catch (err) {
-      console.warn('join fetch failed', err);
-      await new Promise((accept, reject) => {
-        setTimeout(accept, 10000000);
-      });
-      throw err;
     }
   }
 }

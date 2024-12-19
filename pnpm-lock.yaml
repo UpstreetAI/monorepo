@@ -187,7 +187,7 @@ importers:
         version: link:../../packages/usdk/packages/upstreet-agent/packages/react-agents
       react-agents-browser:
         specifier: file:../../packages/usdk/packages/upstreet-agent/packages/react-agents-browser
-        version: file:packages/usdk/packages/upstreet-agent/packages/react-agents-browser(babel-plugin-macros@3.1.0)
+        version: file:packages/usdk/packages/upstreet-agent/packages/react-agents-browser(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
       react-agents-builder:
         specifier: file:../../packages/usdk/packages/upstreet-agent/packages/react-agents-builder
         version: link:../../packages/usdk/packages/upstreet-agent/packages/react-agents-builder
@@ -654,6 +654,9 @@ importers:
       archiver:
         specifier: ^7.0.1
         version: 7.0.1
+      boxen:
+        specifier: ^8.0.1
+        version: 8.0.1
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -669,6 +672,9 @@ importers:
       commander:
         specifier: ^12.0.0
         version: 12.1.0
+      configstore:
+        specifier: ^7.0.0
+        version: 7.0.0
       cookie:
         specifier: ^0.6.0
         version: 0.6.0
@@ -708,6 +714,15 @@ importers:
       hono:
         specifier: ^4.6.9
         version: 4.6.13
+      is-in-ci:
+        specifier: ^1.0.0
+        version: 1.0.0
+      is-installed-globally:
+        specifier: ^1.0.0
+        version: 1.0.0
+      is-npm:
+        specifier: ^6.0.0
+        version: 6.0.0
       javascript-time-ago:
         specifier: ^2.5.11
         version: 2.5.11
@@ -726,6 +741,9 @@ importers:
       lamejs:
         specifier: file:./packages/upstreet-agent/packages/codecs/packages/lamejs
         version: file:packages/usdk/packages/upstreet-agent/packages/codecs/packages/lamejs
+      latest-version:
+        specifier: ^9.0.0
+        version: 9.0.0
       libopusjs:
         specifier: file:./packages/upstreet-agent/packages/codecs/packages/libopusjs
         version: file:packages/usdk/packages/upstreet-agent/packages/codecs/packages/libopusjs
@@ -765,9 +783,15 @@ importers:
       pretty-bytes:
         specifier: ^6.1.1
         version: 6.1.1
+      pupa:
+        specifier: ^3.1.0
+        version: 3.1.0
       queue-manager:
         specifier: file:./packages/upstreet-agent/packages/queue-manager
         version: link:packages/upstreet-agent/packages/queue-manager
+      react-agents:
+        specifier: file:./packages/upstreet-agent/packages/react-agents
+        version: link:packages/upstreet-agent/packages/react-agents
       react-agents-electron:
         specifier: file:./packages/upstreet-agent/packages/react-agents-electron
         version: link:packages/upstreet-agent/packages/react-agents-electron
@@ -786,6 +810,9 @@ importers:
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
+      semver:
+        specifier: ^7.6.3
+        version: 7.6.3
       shell-escape-tag:
         specifier: ^2.0.2
         version: 2.0.2
@@ -814,11 +841,14 @@ importers:
         specifier: ^3.16.0
         version: 3.17.0
       wrangler:
-        specifier: ^3.60.2
+        specifier: ^3.95.0
         version: 3.95.0
       ws:
         specifier: ^8.17.0
         version: 8.18.0
+      xdg-basedir:
+        specifier: ^5.1.0
+        version: 5.1.0
       yjs:
         specifier: ^13.6.18
         version: 13.6.20
@@ -828,6 +858,9 @@ importers:
       zod:
         specifier: ^3.23.8
         version: 3.24.1
+      zod-to-json-schema:
+        specifier: ^3.23.5
+        version: 3.24.1(zod@3.24.1)
       zod-to-ts:
         specifier: ^1.2.0
         version: 1.2.0(typescript@4.9.5)(zod@3.24.1)
@@ -936,6 +969,9 @@ importers:
       javascript-time-ago:
         specifier: ^2.5.11
         version: 2.5.11
+      jest:
+        specifier: ^29.0.0
+        version: 29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))
       jimp:
         specifier: ^1.6.0
         version: 1.6.0
@@ -963,6 +999,9 @@ importers:
       react-agents-client:
         specifier: file:./packages/react-agents-client
         version: link:packages/react-agents-client
+      react-agents-node:
+        specifier: file:./packages/react-agents-node
+        version: link:packages/react-agents-node
       react-reconciler:
         specifier: 0.31.0-rc-df5f2736-20240712
         version: 0.31.0-rc-df5f2736-20240712(react@19.0.0-rc-df5f2736-20240712)
@@ -1042,8 +1081,8 @@ importers:
         specifier: file:../codecs
         version: link:../codecs
       upstreet-agent:
-        specifier: file:../..
-        version: link:../..
+        specifier: file:../../
+        version: file:packages/usdk/packages/upstreet-agent(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(babel-plugin-macros@3.1.0)
 
   packages/usdk/packages/upstreet-agent/packages/react-agents-builder:
     dependencies:
@@ -1059,6 +1098,9 @@ importers:
       '@upstreet/multiplayer':
         specifier: file:./packages/multiplayer
         version: multiplayer@file:packages/usdk/packages/upstreet-agent/packages/react-agents-client/packages/multiplayer
+      react-agents:
+        specifier: file:../react-agents
+        version: link:../react-agents
 
   packages/usdk/packages/upstreet-agent/packages/react-agents-electron: {}
 
@@ -12138,8 +12180,14 @@ packages:
   react-agents-browser@file:packages/usdk/packages/upstreet-agent/packages/react-agents-browser:
     resolution: {directory: packages/usdk/packages/upstreet-agent/packages/react-agents-browser, type: directory}
 
+  react-agents-builder@file:packages/usdk/packages/upstreet-agent/packages/react-agents-builder:
+    resolution: {directory: packages/usdk/packages/upstreet-agent/packages/react-agents-builder, type: directory}
+
   react-agents-client@file:packages/usdk/packages/upstreet-agent/packages/react-agents-client:
     resolution: {directory: packages/usdk/packages/upstreet-agent/packages/react-agents-client, type: directory}
+
+  react-agents-node@file:packages/usdk/packages/upstreet-agent/packages/react-agents-node:
+    resolution: {directory: packages/usdk/packages/upstreet-agent/packages/react-agents-node, type: directory}
 
   react-agents@file:packages/usdk/packages/upstreet-agent/packages/react-agents:
     resolution: {directory: packages/usdk/packages/upstreet-agent/packages/react-agents, type: directory}
@@ -16206,6 +16254,41 @@ snapshots:
       graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
       jest-config: 29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@18.19.68)(typescript@4.9.5))
+      jest-haste-map: 29.7.0
+      jest-message-util: 29.7.0
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-resolve-dependencies: 29.7.0
+      jest-runner: 29.7.0
+      jest-runtime: 29.7.0
+      jest-snapshot: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      jest-watcher: 29.7.0
+      micromatch: 4.0.8
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-ansi: 6.0.1
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
+  '@jest/core@29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))':
+    dependencies:
+      '@jest/console': 29.7.0
+      '@jest/reporters': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 22.7.8
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-changed-files: 29.7.0
+      jest-config: 29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-regex-util: 29.6.3
@@ -22198,6 +22281,21 @@ snapshots:
       - supports-color
       - ts-node
 
+  create-jest@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-config: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      jest-util: 29.7.0
+      prompts: 2.4.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
   create-jest@29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.7.8)(typescript@5.7.2)):
     dependencies:
       '@jest/types': 29.6.3
@@ -23318,7 +23416,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-webpack@0.13.10(eslint-plugin-import@2.31.0)(webpack@5.97.1):
+  eslint-import-resolver-webpack@0.13.10(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(webpack@5.97.1):
     dependencies:
       debug: 3.2.7
       enhanced-resolve: 0.9.1
@@ -23346,14 +23444,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-webpack@0.13.10)(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-webpack@0.13.10(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(webpack@5.97.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-webpack: 0.13.10(eslint-plugin-import@2.31.0)(webpack@5.97.1)
+      eslint-import-resolver-webpack: 0.13.10(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(webpack@5.97.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -23422,7 +23520,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-webpack@0.13.10)(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-webpack@0.13.10(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(webpack@5.97.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -25345,6 +25443,25 @@ snapshots:
       - supports-color
       - ts-node
 
+  jest-cli@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      create-jest: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      exit: 0.1.2
+      import-local: 3.2.0
+      jest-config: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
   jest-cli@29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.7.8)(typescript@5.7.2)):
     dependencies:
       '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.7.8)(typescript@5.7.2))
@@ -25367,6 +25484,25 @@ snapshots:
   jest-cli@29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2)):
     dependencies:
       '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      create-jest: 29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))
+      exit: 0.1.2
+      import-local: 3.2.0
+      jest-config: 29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
+  jest-cli@29.7.0(babel-plugin-macros@3.1.0):
+    dependencies:
+      '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
       chalk: 4.1.2
@@ -25414,6 +25550,37 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
+  jest-config@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0(babel-plugin-macros@3.1.0)
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 20.11.5
+      ts-node: 10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
   jest-config@29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@18.19.68)(typescript@4.9.5)):
     dependencies:
       '@babel/core': 7.26.0
@@ -25441,6 +25608,37 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.7.8
       ts-node: 10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@18.19.68)(typescript@4.9.5)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
+  jest-config@29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0(babel-plugin-macros@3.1.0)
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 22.7.8
+      ts-node: 10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -25791,6 +25989,18 @@ snapshots:
       - supports-color
       - ts-node
 
+  jest@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      '@jest/types': 29.6.3
+      import-local: 3.2.0
+      jest-cli: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
   jest@29.7.0(@types/node@22.7.8)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.7.8)(typescript@5.7.2)):
     dependencies:
       '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.7.8)(typescript@5.7.2))
@@ -25809,6 +26019,18 @@ snapshots:
       '@jest/types': 29.6.3
       import-local: 3.2.0
       jest-cli: 29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+
+  jest@29.7.0(babel-plugin-macros@3.1.0):
+    dependencies:
+      '@jest/core': 29.7.0(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      '@jest/types': 29.6.3
+      import-local: 3.2.0
+      jest-cli: 29.7.0(babel-plugin-macros@3.1.0)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -28401,25 +28623,39 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  react-agents-browser@file:packages/usdk/packages/upstreet-agent/packages/react-agents-browser(babel-plugin-macros@3.1.0):
+  react-agents-browser@file:packages/usdk/packages/upstreet-agent/packages/react-agents-browser(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
     dependencies:
       codecs: file:packages/usdk/packages/upstreet-agent/packages/codecs
-      upstreet-agent: file:packages/usdk/packages/upstreet-agent(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(babel-plugin-macros@3.1.0)(jest@29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2)))
+      upstreet-agent: file:packages/usdk/packages/upstreet-agent(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
     transitivePeerDependencies:
       - '@babel/core'
       - '@jest/transform'
       - '@jest/types'
+      - '@types/node'
       - babel-jest
       - babel-plugin-macros
       - bufferutil
       - encoding
       - esbuild
-      - jest
+      - node-notifier
+      - supports-color
+      - ts-node
       - utf-8-validate
+
+  react-agents-builder@file:packages/usdk/packages/upstreet-agent/packages/react-agents-builder:
+    dependencies:
+      esbuild-wasm: 0.24.0
+      react-agents: file:packages/usdk/packages/upstreet-agent/packages/react-agents
 
   react-agents-client@file:packages/usdk/packages/upstreet-agent/packages/react-agents-client:
     dependencies:
       '@upstreet/multiplayer': multiplayer@file:packages/usdk/packages/upstreet-agent/packages/react-agents-client/packages/multiplayer
+      react-agents: file:packages/usdk/packages/upstreet-agent/packages/react-agents
+
+  react-agents-node@file:packages/usdk/packages/upstreet-agent/packages/react-agents-node:
+    dependencies:
+      '@iarna/toml': 2.2.5
+      react-agents-builder: file:packages/usdk/packages/upstreet-agent/packages/react-agents-builder
 
   react-agents@file:packages/usdk/packages/upstreet-agent/packages/react-agents: {}
 
@@ -30203,6 +30439,39 @@ snapshots:
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.26.0)
 
+  ts-jest@29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2):
+    dependencies:
+      bs-logger: 0.2.6
+      ejs: 3.1.10
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.7.0(babel-plugin-macros@3.1.0)
+      jest-util: 29.7.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.6.3
+      typescript: 5.7.2
+      yargs-parser: 21.1.1
+    optionalDependencies:
+      '@babel/core': 7.26.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
+
+  ts-jest@29.2.5(jest@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)))(typescript@5.7.2):
+    dependencies:
+      bs-logger: 0.2.6
+      ejs: 3.1.10
+      fast-json-stable-stringify: 2.1.0
+      jest: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      jest-util: 29.7.0
+      json5: 2.2.3
+      lodash.memoize: 4.1.2
+      make-error: 1.3.6
+      semver: 7.6.3
+      typescript: 5.7.2
+      yargs-parser: 21.1.1
+
   ts-mixer@6.0.4: {}
 
   ts-morph@12.0.0:
@@ -30600,7 +30869,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  upstreet-agent@file:packages/usdk/packages/upstreet-agent(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(babel-plugin-macros@3.1.0)(jest@29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2))):
+  upstreet-agent@file:packages/usdk/packages/upstreet-agent(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(babel-plugin-macros@3.1.0):
     dependencies:
       '@aws-sdk/util-format-url': 3.709.0
       '@iarna/toml': 2.2.5
@@ -30616,6 +30885,7 @@ snapshots:
       ethers: 6.13.4
       format-util: 1.0.5
       javascript-time-ago: 2.5.11
+      jest: 29.7.0(babel-plugin-macros@3.1.0)
       jimp: 1.6.0
       memoize-one: 6.0.0
       minimatch: 9.0.5
@@ -30625,10 +30895,11 @@ snapshots:
       react: 19.0.0-rc-df5f2736-20240712
       react-agents: file:packages/usdk/packages/upstreet-agent/packages/react-agents
       react-agents-client: file:packages/usdk/packages/upstreet-agent/packages/react-agents-client
+      react-agents-node: file:packages/usdk/packages/upstreet-agent/packages/react-agents-node
       react-reconciler: 0.31.0-rc-df5f2736-20240712(react@19.0.0-rc-df5f2736-20240712)
       stripe: 16.12.0
       together-ai: 0.6.0
-      ts-jest: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(@types/node@22.8.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@22.8.1)(typescript@5.7.2)))(typescript@5.7.2)
+      ts-jest: 29.2.5(@babel/core@7.26.0)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2)
       twitter-api-sdk: 1.2.1
       typescript: 5.7.2
       uuid-by-string: 4.0.0
@@ -30641,12 +30912,69 @@ snapshots:
       - '@babel/core'
       - '@jest/transform'
       - '@jest/types'
+      - '@types/node'
       - babel-jest
       - babel-plugin-macros
       - bufferutil
       - encoding
       - esbuild
-      - jest
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+
+  upstreet-agent@file:packages/usdk/packages/upstreet-agent(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)):
+    dependencies:
+      '@aws-sdk/util-format-url': 3.709.0
+      '@iarna/toml': 2.2.5
+      '@supabase/supabase-js': 2.47.5
+      '@tsndr/cloudflare-worker-jwt': 2.5.3
+      '@types/jest': 29.5.14
+      '@types/react': 18.3.16
+      browser-util-inspect: 0.2.0
+      codecs: file:packages/usdk/packages/upstreet-agent/packages/codecs
+      debouncer: file:packages/usdk/packages/upstreet-agent/packages/debouncer
+      dedent: 1.5.3(babel-plugin-macros@3.1.0)
+      dotenv: 16.4.7
+      ethers: 6.13.4
+      format-util: 1.0.5
+      javascript-time-ago: 2.5.11
+      jest: 29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2))
+      jimp: 1.6.0
+      memoize-one: 6.0.0
+      minimatch: 9.0.5
+      openai: 4.76.1(zod@3.24.1)
+      playwright-core-lite: file:packages/usdk/packages/upstreet-agent/packages/playwright-core-lite
+      queue-manager: file:packages/usdk/packages/upstreet-agent/packages/queue-manager
+      react: 19.0.0-rc-df5f2736-20240712
+      react-agents: file:packages/usdk/packages/upstreet-agent/packages/react-agents
+      react-agents-client: file:packages/usdk/packages/upstreet-agent/packages/react-agents-client
+      react-agents-node: file:packages/usdk/packages/upstreet-agent/packages/react-agents-node
+      react-reconciler: 0.31.0-rc-df5f2736-20240712(react@19.0.0-rc-df5f2736-20240712)
+      stripe: 16.12.0
+      together-ai: 0.6.0
+      ts-jest: 29.2.5(jest@29.7.0(@types/node@20.11.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.1(@swc/core@1.10.1(@swc/helpers@0.5.13))(@types/node@20.11.5)(typescript@5.7.2)))(typescript@5.7.2)
+      twitter-api-sdk: 1.2.1
+      typescript: 5.7.2
+      uuid-by-string: 4.0.0
+      yjs: 13.6.20
+      zjs: '@upstreet/zjs@file:packages/usdk/packages/upstreet-agent/packages/react-agents-client/packages/multiplayer/packages/zjs'
+      zod: 3.24.1
+      zod-to-json-schema: 3.24.1(zod@3.24.1)
+      zod-to-ts: 1.2.0(typescript@5.7.2)(zod@3.24.1)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@jest/transform'
+      - '@jest/types'
+      - '@types/node'
+      - babel-jest
+      - babel-plugin-macros
+      - bufferutil
+      - encoding
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
       - utf-8-validate
 
   uri-js@4.4.1:
@@ -31220,7 +31548,7 @@ snapshots:
       eslint-config-xo: 0.45.0(eslint@8.57.1)
       eslint-config-xo-typescript: 5.0.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
       eslint-formatter-pretty: 6.0.1
-      eslint-import-resolver-webpack: 0.13.10(eslint-plugin-import@2.31.0)(webpack@5.97.1)
+      eslint-import-resolver-webpack: 0.13.10(eslint-plugin-import@2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1))(webpack@5.97.1)
       eslint-plugin-ava: 14.0.0(eslint@8.57.1)
       eslint-plugin-eslint-comments: 3.2.0(eslint@8.57.1)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-webpack@0.13.10)(eslint@8.57.1)

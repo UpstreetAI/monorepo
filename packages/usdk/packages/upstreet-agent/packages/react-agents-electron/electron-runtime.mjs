@@ -1,6 +1,7 @@
 import crossSpawn from 'cross-spawn';
 import { devServerPort } from './util/ports.mjs';
 import { electronBinPath, electronStartScriptPath } from './util/locations.mjs';
+import { installAgent } from '../react-agents-node/install-agent.mjs';
 
 //
 
@@ -62,7 +63,7 @@ const waitForProcessIo = async (cp, matcher, timeout = 60 * 1000) => {
     cp.stdout.on('end', onEnd);
 
     cp.on('exit', (code) => {
-      reject(new Error(`failed to get start process: ${cp.pid}: ${code}`));
+      reject(new Error(`failed to start process: ${cp.pid}: ${code}`));
     });
 
     const timeoutId = setTimeout(() => {
@@ -97,12 +98,23 @@ export class ReactAgentsElectronRuntime {
       portIndex,
     } = this.agentSpec;
 
+    const {
+      agentPath: dstDir,
+      wranglerTomlPath,
+      cleanup: cleanupInstall,
+    } = await installAgent(directory);
+    // console.log('got agent dir', {
+    //   dstDir,
+    //   wranglerTomlPath,
+    // });
+
     // spawn the wrangler child process
     const cp = crossSpawn(
       electronBinPath,
       [
         electronStartScriptPath,
         'run',
+        directory,
         '--',
         // '--var', 'WORKER_ENV:development',
         '--ip', '0.0.0.0',
@@ -116,6 +128,9 @@ export class ReactAgentsElectronRuntime {
         cwd: directory,
       },
     );
+    cp.on('exit', (code) => {
+      cleanupInstall();
+    });
     bindProcess(cp);
     await waitForProcessIo(cp, /electron main ready/i);
     if (debug) {

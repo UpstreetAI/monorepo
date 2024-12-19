@@ -175,7 +175,7 @@ const makeViteWatcher = (directory) => {
     root: directory,
     watch: {
       include: [
-        './packages/upstreet-agent/packages/react-agents-node/entry.mjs',
+        './entry.mjs',
       ],
     },
   });

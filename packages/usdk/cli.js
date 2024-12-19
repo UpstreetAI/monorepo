@@ -78,7 +78,6 @@ import {
   edit,
   pull,
   deploy,
-  update,
   authenticate,
   chat,
   runAgent,
@@ -1755,26 +1754,6 @@ export const createProgram = () => {
           const jwt = await getLoginJwt();
 
           await authenticate(args, {
-            jwt,
-          });
-        });
-      });
-    program
-      .command('update')
-      .description('Update an agent to the latest sdk version')
-      .argument(`[directories...]`, `Path to the agents to update`)
-      .option(`-f, --force`, `Force update even if there are conflicts`)
-      .action(async (directories = '', opts) => {
-        await handleError(async () => {
-          commandExecuted = true;
-          const args = {
-            _: [directories],
-            ...opts,
-          };
-
-          const jwt = await getLoginJwt();
-
-          await update(args, {
             jwt,
           });
         });

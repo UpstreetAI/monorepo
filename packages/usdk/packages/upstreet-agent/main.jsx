@@ -1,5 +1,5 @@
 export { DurableObject } from './durable-object.jsx';
-import { headers } from './packages/react-agents/constants.mjs';
+import { headers } from 'react-agents/constants.mjs';
 
 async function handleAgentRequest(request, env) {
   const guid = env.GUID;

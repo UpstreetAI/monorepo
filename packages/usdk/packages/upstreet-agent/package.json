@@ -25,6 +25,7 @@
     "queue-manager": "file:./packages/queue-manager",
     "react": "19.0.0-rc-df5f2736-20240712",
     "react-agents": "file:./packages/react-agents",
+    "react-agents-node": "file:./packages/react-agents-node",
     "react-agents-client": "file:./packages/react-agents-client",
     "react-reconciler": "0.31.0-rc-df5f2736-20240712",
     "stripe": "^16.10.0",

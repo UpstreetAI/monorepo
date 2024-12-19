@@ -2,6 +2,7 @@ import path from 'path';
 import crossSpawn from 'cross-spawn';
 import { devServerPort } from './util/ports.mjs';
 import { getCurrentDirname} from '../react-agents/util/path-util.mjs'
+import { installAgent } from '../react-agents-node/install-agent.mjs';
 
 //
 
@@ -41,8 +42,13 @@ export class ReactAgentsNodeRuntime {
       portIndex,
     } = this.agentSpec;
 
-    const watcherPath = path.join(localDirectory, 'watcher.mjs');
+    const {
+      agentPath: dstDir,
+      wranglerTomlPath,
+      cleanup: cleanupInstall,
+    } = await installAgent(directory);
 
+    const watcherPath = path.join(localDirectory, 'watcher.mjs');
     const cp = crossSpawn(
       'node',
       [
@@ -85,6 +91,7 @@ export class ReactAgentsNodeRuntime {
     };
     cp.on('message', message);
     const cleanup = () => {
+      cleanupInstall();
       cp.removeListener('error', error);
       cp.removeListener('exit', exit);
       cp.removeListener('message', message);

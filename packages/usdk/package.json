@@ -127,7 +127,7 @@
     "web-worker": "1.2.0",
     "webp-wasm": "^1.0.6",
     "winston": "^3.16.0",
-    "wrangler": "^3.60.2",
+    "wrangler": "^3.95.0",
     "ws": "^8.17.0",
     "yjs": "^13.6.18",
     "zjs": "file:./packages/upstreet-agent/packages/react-agents-client/packages/multiplayer/packages/zjs",

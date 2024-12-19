@@ -1,4 +1,5 @@
 import path from 'path';
+// import fs from 'fs';
 import os from 'os';
 import { program } from 'commander';
 import { createServer as createViteServer } from 'vite';
@@ -15,7 +16,6 @@ import { serve } from '@hono/node-server';
     });
   });
 });
-
 process.addListener('SIGTERM', () => {
   process.exit(0);
 });
@@ -69,10 +69,10 @@ const runAgent = async (directory, opts) => {
   const init = initString && JSON.parse(initString);
   const debug = parseInt(opts.debug, 10);
 
-  const p = '/packages/upstreet-agent/packages/react-agents-node/entry.mjs';
-  const main = await loadModule(directory, p);
+  const main = await loadModule(directory, 'entry.mjs');
   // console.log('worker loaded module', main);
-  const agentMain = main({
+  const agentMain = await main({
+    // directory,
     init,
     debug,
   });
@@ -94,19 +94,18 @@ const runAgent = async (directory, opts) => {
   });
   // console.log('worker send 2');
 };
-const makeViteServer = (directory) => {
-  return createViteServer({
+const makeViteServer = async (directory) => {
+  return await createViteServer({
     root: directory,
     server: { middlewareMode: 'ssr' },
     cacheDir: path.join(homeDir, '.usdk', 'vite'),
+    // resolve,
     esbuild: {
       jsx: 'transform',
-      // jsxFactory: 'React.createElement',
-      // jsxFragment: 'React.Fragment',
     },
     optimizeDeps: {
       entries: [
-        './packages/upstreet-agent/packages/react-agents-node/entry.mjs',
+        './entry.mjs',
       ],
     },
   });
