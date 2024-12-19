@@ -5,6 +5,9 @@ import type {
 import {
   featureRenderers,
 } from '../../util/agent-features-renderer';
+import {
+  dataSourceRenderers,
+} from '../../util/data-source-renderer';
 
 // defaults
 
@@ -18,6 +21,8 @@ type ConfigAgentComponentProps = {
  */
 export const ConfigAgentComponents = (props: ConfigAgentComponentProps) => {
   const features = props.config?.features ?? {};
+  const dataSources = props.config?.dataSources ?? {};
+
   return (
     <>
       {Object.keys(features).map((key) => {
@@ -26,6 +31,12 @@ export const ConfigAgentComponents = (props: ConfigAgentComponentProps) => {
         return (
           <FeatureRenderer {...value} key={key} />
         );
+      })}
+
+      {Object.entries(dataSources).map(([key, config]) => {
+        const DataSourceRenderer = dataSourceRenderers[config.type];
+        if (!DataSourceRenderer) return null;
+        return <DataSourceRenderer key={key} {...(config as any)} />;
       })}
     </>
   );

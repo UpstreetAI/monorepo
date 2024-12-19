@@ -74,6 +74,7 @@ const DefaultPrompts = () => {
       <DefaultHeaderPrompt />
       <ConversationEnvironmentPrompt />
       <ActionsPrompt />
+      <DataSourcesPrompt />
       <StorePrompt />
       <ConversationMessagesPrompt />
       <InstructionsPrompt />
@@ -91,6 +92,28 @@ const DefaultHeaderPrompt = () => {
     </Prompt>
   );
 };
+const DataSourcesPrompt = () => {
+  const agent = useAgent();
+  const dataSources = agent.dataSourceManager.getAllDataSources();
+
+  if (dataSources.length === 0) return null;
+
+  return (
+    <Prompt>
+      {dedent`
+        # Data Sources
+        You have access to the following data sources that you can query:
+        ${dataSources.map(source => dedent`
+          - ${source.name} (ID: ${source.id})
+            Description: ${source.description}
+            Type: ${source.type}
+            ${source.type === 'api' ? `Endpoint: ${(source as any).endpoint}` : ''}
+        `).join('\n')}
+      `}
+    </Prompt>
+  );
+};
+
 const ConversationEnvironmentPrompt = () => {
   return (
     <>

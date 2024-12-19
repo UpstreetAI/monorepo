@@ -25,5 +25,6 @@ export * from './components/plugins/video-perception';
 export * from './loops/chat-loop';
 export * from './loops/action-loop';
 export * from './components/plugins/auto-task';
+export * from './components/plugins/data-source-learner';
 
 export * from './hooks';

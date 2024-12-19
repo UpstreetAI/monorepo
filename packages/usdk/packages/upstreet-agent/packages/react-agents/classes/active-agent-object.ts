@@ -39,6 +39,7 @@ import {
 } from './live-manager';
 import { PingManager } from './ping-manager';
 import { AgentRegistry } from './render-registry';
+import { DataSourceManager } from './data-source-manager';
 
 //
 
@@ -57,7 +58,7 @@ export class ActiveAgentObject extends AgentObject {
   liveManager: LiveManager;
   pingManager: PingManager;
   generativeAgentsMap = new WeakMap<ConversationObject, GenerativeAgentObject>();
-
+  dataSourceManager: DataSourceManager;
   //
   
   constructor(
@@ -100,6 +101,7 @@ export class ActiveAgentObject extends AgentObject {
     this.liveManager = new LiveManager({
       agent: this,
     });
+    this.dataSourceManager = new DataSourceManager();
     const bindLiveManager = () => {
       // dispatch up to the registry so the runtime can update its bookkeeping
       const proxyRegistryEvent = (event: MessageEvent) => {

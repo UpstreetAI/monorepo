@@ -1,4 +1,7 @@
-import { AgentObjectData } from '../types';
+import {
+  AgentObjectData,
+  DataSourceConfig,
+} from '../types';
 
 export class AgentObject extends EventTarget {
   id: string;
@@ -13,6 +16,8 @@ export class AgentObject extends EventTarget {
   features: string[];
   address: string;
   stripeConnectAccountId: string;
+  dataSources?: Record<string, DataSourceConfig>;
+
 
   constructor(config: AgentObjectData) {
     super();
@@ -31,6 +36,7 @@ export class AgentObject extends EventTarget {
     features,
     address,
     stripeConnectAccountId,
+    dataSources,
   }: AgentObjectData) {
     this.id = id;
     this.ownerId = ownerId;
@@ -44,5 +50,6 @@ export class AgentObject extends EventTarget {
     this.features = features;
     this.address = address;
     this.stripeConnectAccountId = stripeConnectAccountId;
+    this.dataSources = dataSources;
   }
 }
